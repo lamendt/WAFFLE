@@ -1,0 +1,5 @@
+module tb;
+    logic clk = 0;
+    always #5 clk = ~clk;
+    cpu dut (.*);
+endmodule

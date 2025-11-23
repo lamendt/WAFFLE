@@ -1,0 +1,110 @@
+m255
+K4
+z2
+Z0 !s12c _opt
+Z1 !s99 nomlopt
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+!s11f vlog 2024.3 2024.09, Sep 10 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/levia/Documents/CPEN211/Lab2FA
+T_opt
+!s110 1763881675
+VX05]zaFn^n0jPLdD?oIXg0
+04 2 4 work tb fast 0
+=8-9c5a4409d0bf-6922b2ca-2e7-42b4
+R1
+!s12f OEM100
+!s12b OEM100
+!s124 OEM10U2 
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work +acc
+Z2 tCvgOpt 0
+n@_opt
+OL;O;2024.3;79
+vtb
+2C:/Users/levia/Documents/8bitCPU/tb.sv
+Z3 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z4 !s110 1763881668
+!i10b 1
+!s100 k@_P^_@oI3I9VCU48h8WT3
+I:j24MQ>7T0i=f?Ge2HgM33
+S1
+Z5 dC:/Users/levia/Documents/8bitCPU
+w1763875449
+8C:/Users/levia/Documents/8bitCPU/tb.sv
+FC:/Users/levia/Documents/8bitCPU/tb.sv
+!i122 37
+L0 1 8
+Z6 VDg1SIo80bB@j0V0VzS_@n1
+Z7 OL;L;2024.3;79
+r1
+!s85 0
+31
+Z8 !s108 1763881668.000000
+!s107 C:/Users/levia/Documents/8bitCPU/tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/tb.sv|
+!i113 0
+Z9 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R2
+vTop
+2C:/Users/levia/Documents/8bitCPU/Top.sv
+R3
+R4
+!i10b 1
+!s100 =Cm:h>@;^JZ>`CjF1i`h83
+IjHUbiZ8HfIclOV_RRE;oQ0
+S1
+R5
+w1763881660
+8C:/Users/levia/Documents/8bitCPU/Top.sv
+FC:/Users/levia/Documents/8bitCPU/Top.sv
+!i122 38
+L0 1 266
+R6
+R7
+r1
+!s85 0
+31
+R8
+!s107 C:/Users/levia/Documents/8bitCPU/Top.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/Top.sv|
+!i113 0
+R9
+R2
+n@top

@@ -1,0 +1,13 @@
+module RAM (input logic clk, we,
+input logic [15:0] addr,
+input logic [7:0] din,
+output logic [7:0] dout);
+
+
+
+always_ff @(posedge clk) begin
+if (we)
+	
+end
+
+endmodule
