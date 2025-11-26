@@ -349,14 +349,6 @@ int main() {
             bitset<2> reg = stoi(words.at(1).substr(1));
             binfile << "100100" << reg.to_string() << "\n";
         }
-        else if (op == "DEC") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100011" << reg.to_string() << "\n";
-        }
-        else if (op == "NOT") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100100" << reg.to_string() << "\n";
-        }
         else if (op == "AND") {
             bitset<2> reg = stoi(words.at(1).substr(1));
             binfile << "100101" << reg.to_string() << "\n";
