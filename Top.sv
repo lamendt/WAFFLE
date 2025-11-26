@@ -17,7 +17,7 @@ assign clk = MAX10_CLK1_50;
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("for.bin", RAM);
+    $readmemb("testcode/test.bin", RAM);
 end
 
 always_comb begin
@@ -58,12 +58,14 @@ always_comb begin
 			3'b010:
 				ALUout = A <<< R[instruction[1:0]];
 			3'b011:
-				ALUout = A >> R[instruction[1:0]];
+				ALUout = A >>> R[instruction[1:0]];
 			3'b100:
+				ALUout = A >> R[instruction[1:0]];
+			3'b101:
 				ALUout = A & R[instruction[1:0]];
-			3'b101:
+			3'b110:
 				ALUout = A | R[instruction[1:0]];
-			3'b101:
+			3'b111:
 				ALUout = A ^ R[instruction[1:0]];
 			default:
 				ALUout = 0;
@@ -100,6 +102,18 @@ always_comb begin
 			din = R[instruction[1:0]]; end
 		8'b11110000:								//A <-> [AB]
 			addr = AB;
+		8'b111000??:								//R <-> [AB + PC]										
+			addr = AB + PC;
+		8'b111000??: begin																		
+			we = 1;
+			addr = AB + PC;
+			din = R[instruction[1:0]]; end
+		8'b11101000:								//A <-> [AB + PC]
+			addr = AB + PC;
+		8'b11101001: begin							
+			we = 1;
+			addr = AB + PC;
+			din = A; end
 		8'b11110001: begin
 			we = 1;
 			addr = AB;
@@ -147,16 +161,21 @@ always_ff @(posedge clk) begin
 				if(instruction[1] == 0)
 					PC <= AB;
 				else
-					PC <= PC + {{8{A[7]}},A};
+					PC <= PC + AB;
 				if(instruction[0] == 1)
 					RA <= PC+1;
 			end
 			else
 				PC <= PC + 1; end
 		8'b100?????: begin								//ALU ops
-			if(instruction[4:2] != 3'b111)
-				A <= ALUout;
-			else begin
+			A <= ALUout;
+			if(instruction[4:2] == 3'b000) begin
+				FR[0] <= ALUout == 0;
+				FR[1] <= ALUout[7];
+				FR[2] <= ALUout < R[instruction[1:0]];
+				FR[3] <= (A[7] == R[instruction[1:0]][7]) && (ALUout[7] != A[7]);
+			end
+			else if(instruction[4:2] == 3'b001) begin
 				FR[0] <= ALUout == 0;
 				FR[1] <= ALUout[7];
 				FR[2] <= A >= R[instruction[1:0]];
@@ -165,7 +184,7 @@ always_ff @(posedge clk) begin
 		8'b10100???:								//<<</>> IMM
 			A <= A <<< instruction[2:0];
 		8'b10101???:
-			A <= A >> instruction[2:0];
+			A <= A >>> instruction[2:0];
 		8'b101100??: begin 						//R <-> S
 			R[instruction[1:0]] <= dout;
 			SP <= SP + 1; end
@@ -201,10 +220,16 @@ always_ff @(posedge clk) begin
 			AB <= {{8{R[instruction[1:0]][7]}},R[instruction[1:0]]};
 		8'b110111??:
 			AB <= {R[instruction[1:0]],AB[7:0]};
-		8'b11100???:								//Unused											
+		8'b111000??:								//R <-> [AB + PC]										
+			R[instruction[1:0]] <= dout;
+		8'b111000??:																			
 			A <= A;
-		8'b111010??:								//AB += R
-			AB <= AB + {{8{R[instruction[1:0]][7]}},R[instruction[1:0]]};
+		8'b11101000:								//A <-> [AB + PC]
+			A <= dout;
+		8'b11101001:							
+			A <= A;
+		8'b1110101?:								//Unused
+			A <= A;
 		8'b11101100:								//A -> AB
 			AB <= {{8{A[7]}},A};
 		8'b11101101:

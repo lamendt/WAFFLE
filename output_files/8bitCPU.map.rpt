@@ -1,5 +1,5 @@
 Analysis & Synthesis report for 8bitCPU
-Sat Nov 22 23:21:36 2025
+Sun Nov 23 14:41:07 2025
 Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 
 
@@ -44,13 +44,13 @@ on the Quartus Prime software download page.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Sat Nov 22 23:21:36 2025           ;
+; Analysis & Synthesis Status        ; Successful - Sun Nov 23 14:41:07 2025           ;
 ; Quartus Prime Version              ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
 ; Revision Name                      ; 8bitCPU                                         ;
 ; Top-level Entity Name              ; Top                                             ;
 ; Family                             ; MAX 10                                          ;
 ; Total logic elements               ; 15,466                                          ;
-;     Total combinational functions  ; 7,283                                           ;
+;     Total combinational functions  ; 7,268                                           ;
 ;     Dedicated logic registers      ; 8,338                                           ;
 ; Total registers                    ; 8338                                            ;
 ; Total pins                         ; 17                                              ;
@@ -163,19 +163,19 @@ on the Quartus Prime software download page.
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
 ;     Processor 2            ;   0.3%      ;
-;     Processor 3            ;   0.2%      ;
+;     Processor 3            ;   0.3%      ;
 ;     Processor 4            ;   0.2%      ;
 +----------------------------+-------------+
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                 ;
-+----------------------------------+-----------------+------------------------------+------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path             ; Library ;
-+----------------------------------+-----------------+------------------------------+------------------------------------------+---------+
-; Top.sv                           ; yes             ; User SystemVerilog HDL File  ; C:/Users/levia/Documents/8bitCPU/Top.sv  ;         ;
-; for.bin                          ; yes             ; User Unspecified File        ; C:/Users/levia/Documents/8bitCPU/for.bin ;         ;
-+----------------------------------+-----------------+------------------------------+------------------------------------------+---------+
++--------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                     ;
++----------------------------------+-----------------+------------------------------+----------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                 ; Library ;
++----------------------------------+-----------------+------------------------------+----------------------------------------------+---------+
+; Top.sv                           ; yes             ; User SystemVerilog HDL File  ; C:/Users/levia/Documents/8bitCPU/Top.sv      ;         ;
+; SWtoLED.bin                      ; yes             ; User Unspecified File        ; C:/Users/levia/Documents/8bitCPU/SWtoLED.bin ;         ;
++----------------------------------+-----------------+------------------------------+----------------------------------------------+---------+
 
 
 +-------------------------------------------------------------------+
@@ -185,14 +185,14 @@ on the Quartus Prime software download page.
 +---------------------------------------------+---------------------+
 ; Estimated Total logic elements              ; 15,466              ;
 ;                                             ;                     ;
-; Total combinational functions               ; 7283                ;
+; Total combinational functions               ; 7268                ;
 ; Logic element usage by number of LUT inputs ;                     ;
 ;     -- 4 input functions                    ; 6890                ;
 ;     -- 3 input functions                    ; 215                 ;
-;     -- <=2 input functions                  ; 178                 ;
+;     -- <=2 input functions                  ; 163                 ;
 ;                                             ;                     ;
 ; Logic elements by mode                      ;                     ;
-;     -- normal mode                          ; 7134                ;
+;     -- normal mode                          ; 7119                ;
 ;     -- arithmetic mode                      ; 149                 ;
 ;                                             ;                     ;
 ; Total registers                             ; 8338                ;
@@ -205,8 +205,8 @@ on the Quartus Prime software download page.
 ;                                             ;                     ;
 ; Maximum fan-out node                        ; MAX10_CLK1_50~input ;
 ; Maximum fan-out                             ; 8338                ;
-; Total fan-out                               ; 53608               ;
-; Average fan-out                             ; 3.42                ;
+; Total fan-out                               ; 53593               ;
+; Average fan-out                             ; 3.43                ;
 +---------------------------------------------+---------------------+
 
 
@@ -215,7 +215,7 @@ on the Quartus Prime software download page.
 +----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
 ; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name ; Entity Name ; Library Name ;
 +----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
-; |Top                       ; 7283 (7283)         ; 8338 (8338)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 17   ; 0            ; 0          ; |Top                ; Top         ; work         ;
+; |Top                       ; 7268 (7268)         ; 8338 (8338)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 17   ; 0            ; 0          ; |Top                ; Top         ; work         ;
 +----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
@@ -277,12 +277,12 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 ;     ENA               ; 8295                        ;
 ;     ENA SLD           ; 37                          ;
 ;     plain             ; 6                           ;
-; cycloneiii_lcell_comb ; 7283                        ;
+; cycloneiii_lcell_comb ; 7268                        ;
 ;     arith             ; 149                         ;
 ;         2 data inputs ; 76                          ;
 ;         3 data inputs ; 73                          ;
-;     normal            ; 7134                        ;
-;         1 data inputs ; 60                          ;
+;     normal            ; 7119                        ;
+;         1 data inputs ; 45                          ;
 ;         2 data inputs ; 42                          ;
 ;         3 data inputs ; 142                         ;
 ;         4 data inputs ; 6890                        ;
@@ -297,7 +297,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:17     ;
+; Top            ; 00:00:20     ;
 +----------------+--------------+
 
 
@@ -307,7 +307,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
-    Info: Processing started: Sat Nov 22 23:21:09 2025
+    Info: Processing started: Sun Nov 23 14:40:37 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off 8bitCPU -c 8bitCPU
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -319,7 +319,7 @@ Info (12021): Found 1 design units, including 1 entities, in source file ram.sv
     Info (12023): Found entity 1: RAM File: C:/Users/levia/Documents/8bitCPU/RAM.sv Line: 1
 Info (12127): Elaborating entity "Top" for the top level hierarchy
 Warning (10036): Verilog HDL or VHDL warning at Top.sv(11): object "IJA" assigned a value but never read File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 11
-Warning (10850): Verilog HDL warning at Top.sv(20): number of words (16) in memory file does not match the number of elements in the address range [0:1023] File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 20
+Warning (10850): Verilog HDL warning at Top.sv(20): number of words (9) in memory file does not match the number of elements in the address range [0:1023] File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 20
 Warning (10272): Verilog HDL Case Statement warning at Top.sv(66): case item expression covers a value already covered by a previous case item File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 66
 Warning (10230): Verilog HDL assignment warning at Top.sv(75): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 75
 Warning (10230): Verilog HDL assignment warning at Top.sv(81): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 81
@@ -372,8 +372,8 @@ Info (21057): Implemented 15515 device resources after synthesis - the final res
     Info (21061): Implemented 15498 logic cells
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 44 warnings
     Info: Peak virtual memory: 4884 megabytes
-    Info: Processing ended: Sat Nov 22 23:21:36 2025
-    Info: Elapsed time: 00:00:27
-    Info: Total CPU time (on all processors): 00:00:40
+    Info: Processing ended: Sun Nov 23 14:41:07 2025
+    Info: Elapsed time: 00:00:30
+    Info: Total CPU time (on all processors): 00:00:44
 
 
