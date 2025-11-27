@@ -12,6 +12,7 @@
 using namespace std;
 
 void generateIMM (string word, string dest);
+void sizeShift (string word, string op);
 
 unordered_map<string, int> labels;
 vector<int> relMem;
@@ -21,6 +22,7 @@ ofstream binfile;
 
 int main() {
     stringstream workingFile;
+    stringstream workingFile2;
     
     string filename;
     cin >> filename;
@@ -46,8 +48,10 @@ int main() {
             istringstream iss(line);
             vector<string> words;
             string word;
-            while (iss >> word)
+            while (iss >> word) {
+            if (word.substr(0,2) != "//")
                 words.push_back(word);
+            }   
             string op = words[0];
 
             if (op == "IMM") {
@@ -57,19 +61,81 @@ int main() {
                 else if (words.at(1) == "A") {
                     lineNumber += 1;
                 }    
+                else if (words.at(1).at(0) == 'R') {
+                    lineNumber += 2;
+                }
             }
-            else if (op == "J") {
-                lineNumber += 4;
+            else if (op == "J" || op == "JL") {
+                if (words.size() == 2)
+                    lineNumber += 3;
+                relMem.push_back(lineNumber);
             }
+            else if (op == "B") {
+                if (words.size() == 4)
+                    lineNumber += 3;
+                relMem.push_back(lineNumber);
+            }
+            else if (op == "STO" || op == "LD") {
+                if (words.size() == 3)
+                    lineNumber += 3;
+                relMem.push_back(lineNumber);
+            }
+            else if (op == "MV" && (words.at(1) == "AB" || words.at(1) == "AB_bot") && words.size() == 4)
+                lineNumber += 1;
             lineNumber++;
         }
     }
 
     infile.close();
-    ofstream binfile(binfileName);
     lineNumber = 0;
 
     while (getline(workingFile, line)) {
+        workingFile2 << line << "\n";
+        istringstream iss(line);
+        vector<string> words;
+        string word;
+        while (iss >> word) {
+        if (word.substr(0,2) != "//")
+            words.push_back(word);
+        }   
+        string op = words[0];
+
+        if (op == "IMM") {
+            if (words.at(1) == "AB") {
+                sizeShift(words.at(2), "AB");
+            }
+            else if (words.at(1) == "A") {
+                sizeShift(words.at(2), "A");
+            }    
+            else if (words.at(1).at(0) == 'R') {
+                sizeShift(words.at(2), "A");
+                lineNumber += 1;
+            }
+        }
+        else if (op == "J" || op == "JL") {
+            if (words.size() == 2)
+                sizeShift(words.at(1), "AB");
+            lineNumber += 1;
+        }
+        else if (op == "B") {
+            if (words.size() == 4)
+                sizeShift(words.at(3), "AB");
+            lineNumber += 1;
+        }
+        else if (op == "STO" || op == "LD") {
+            if (words.size() == 3)
+                sizeShift(words.at(2), "AB");
+            lineNumber += 1;
+        }
+        else if (op == "MV" && (words.at(1) == "AB" || words.at(1) == "AB_bot") && words.size() == 4)
+            lineNumber += 1;
+        lineNumber++;
+    }
+
+    lineNumber = 0;
+    binfile.open(binfileName);
+
+    while (getline(workingFile2, line)) {
         // Process instruction
         istringstream iss(line);
         vector<string> words;
@@ -85,7 +151,12 @@ int main() {
             }
             else if (words.at(1) == "A") {
                 generateIMM(words.at(2), "A");
-            }    
+            }
+            else if (words.at(1).at(0) == 'R') {
+                generateIMM(words.at(2), "A");
+                bitset<2> reg = stoi(words.at(2).substr(1));
+                binfile << "110001" << reg.to_string() << "\n";
+            }
         }
         else if (op == "MV") {
             if (words.at(1) == "A") {
@@ -93,7 +164,7 @@ int main() {
                     bitset<2> reg = stoi(words.at(2).substr(1));
                     binfile << "110000" << reg.to_string() << "\n";
                 }
-                if (words.at(2) == "IR")
+                else if (words.at(2) == "IR")
                     binfile << "11101110" << "\n";
             }
             else if (words.at(1).at(0) == 'R') {
@@ -102,23 +173,36 @@ int main() {
                     binfile << "110001" << reg.to_string() << "\n";
             }
             else if (words.at(1) == "AB" || words.at(1) == "AB_bot") {
-                if (words.at(2).at(0) == 'R') {
-                    bitset<2> reg = stoi(words.at(2).substr(1));
-                    binfile << "110110" << reg.to_string() << "\n";
+                if (words.size() == 4) {
+                    if (words.at(2).at(0) == 'R') {
+                        bitset<2> reg = stoi(words.at(2).substr(1));
+                        binfile << "110110" << reg.to_string() << "\n";
+                    }
+                    if (words.at(2).at(0) == 'R') {
+                        bitset<2> reg = stoi(words.at(2).substr(1));
+                        binfile << "110111" << reg.to_string() << "\n";
+                    }
+                    lineNumber += 1;
                 }
-                if (words.at(2) == "A") {
-                    binfile << "11101100" << "\n";
-                }
-                if (words.at(2) == "SP") {
-                    binfile << "11111001" << "\n";
+                else {
+                    if (words.at(2).at(0) == 'R') {
+                        bitset<2> reg = stoi(words.at(2).substr(1));
+                        binfile << "110110" << reg.to_string() << "\n";
+                    }
+                    else if (words.at(2) == "A") {
+                        binfile << "11101100" << "\n";
+                    }
+                    else if (words.at(2) == "SP") {
+                        binfile << "11111001" << "\n";
+                    }
                 }
             }
-             else if (words.at(1) == "AB_top") {
+            else if (words.at(1) == "AB_top") {
                 if (words.at(2).at(0) == 'R') {
                     bitset<2> reg = stoi(words.at(2).substr(1));
                     binfile << "110111" << reg.to_string() << "\n";
                 }
-                if (words.at(2) == "A") {
+                else if (words.at(2) == "A") {
                     binfile << "11101101" << "\n";
                 }
             }
@@ -142,7 +226,6 @@ int main() {
             if (words.size() == 2) {
                 bitset<2> reg = stoi(words.at(1).substr(1));
                 binfile << "100000" << reg.to_string() << "\n";
-
             }
             else {
                 if (words.at(1) == "A") {
@@ -170,7 +253,8 @@ int main() {
             }
         }
         else if (op == "B") {
-            generateIMM(words.at(3), "AB");
+            if (words.size() == 4)
+                generateIMM(words.at(3), "AB");
             if (words.at(1) == "EQ") {
                 binfile << "011000";
             }
@@ -204,13 +288,16 @@ int main() {
             }
         }
         else if (op == "J" || op == "JL") {
-            generateIMM(words.at(1), "AB");
+            if (words.size() == 2)
+                generateIMM(words.at(1), "AB");
             if (op == "J")
                 binfile << "01111110";
             else if (op == "JL")
                 binfile << "01111111";
         }
         else if (op == "STO") {
+            if (words.size() == 3)
+                generateIMM(words.at(2), "AB");
             if (words.at(1).at(0) == 'R') {
                 bitset<2> reg = stoi(words.at(1).substr(1));
                 binfile << "110011" << reg.to_string() << "\n";
@@ -362,6 +449,8 @@ void generateIMM(string word, string dest) {
     int IMM;
     if (isdigit(word.at(0)))
         IMM = stoi(word);
+    else if (word.at(0) == '-')
+        IMM = stoi(word.substr(1));
     else if (isalpha(word.at(0))) {
         for (int i : relMem) {
             if (i >= lineNumber) {
@@ -369,10 +458,19 @@ void generateIMM(string word, string dest) {
             }
         }
     }
-    else if (word.at(0) == '$')
+    else if (word.at(0) == '$') {
         IMM = stoi(word.substr(1), nullptr, 16);
-    else if (word.at(0) == '%')
+        int bits = word.substr(1).length() * 4;
+        int sign_bit = 1 << (bits - 1);
+        if (IMM & sign_bit)
+            IMM -= 1 << bits; 
+    }
+    else if (word.at(0) == '%') {
         IMM = (word.substr(1), nullptr, 2);
+        int bits = word.substr(1).length();
+        if (word.at(1) == '1')
+            IMM -= (1 << bits);
+    }
     
     bitset<16> IMMbin = IMM;
     
@@ -392,10 +490,60 @@ void generateIMM(string word, string dest) {
         }
     }
     else if (dest == "A") {
-        binfile << "0000" << IMMbin.to_string().substr(12) << "\n";
+        binfile << "0100" << IMMbin.to_string().substr(12) << "\n";
         if (abs(IMM) > 7) {
-            binfile << "0001" << IMMbin.to_string().substr(8, 4) << "\n";
+            binfile << "0101" << IMMbin.to_string().substr(8, 4) << "\n";
             lineNumber++;
         }
     }
+}
+
+void sizeShift(string word, string op) {
+    int IMM;
+    if (isdigit(word.at(0)))
+        IMM = stoi(word);
+    else if (word.at(0) == '-')
+        IMM = stoi(word.substr(1));
+    else if (isalpha(word.at(0))) {
+        for (int i : relMem) {
+            if (i >= lineNumber) {
+                IMM = labels.at(word) - i;
+            }
+        }
+    }
+    else if (word.at(0) == '$') {
+        IMM = stoi(word.substr(1), nullptr, 16);
+        int bits = word.substr(1).length() * 4;
+        int sign_bit = 1 << (bits - 1);
+        if (IMM & sign_bit)
+            IMM -= 1 << bits; 
+    }
+    else if (word.at(0) == '%') {
+        IMM = (word.substr(1), nullptr, 2);
+        int bits = word.substr(1).length();
+        if (word.at(1) == '1')
+            IMM -= (1 << bits);
+    }
+    
+    int shift = 0;
+    if (abs(IMM) < 7)
+        shift++;
+    if (op == "AB") {
+        if (abs(IMM) < 127)
+            shift++;
+        if (abs(IMM) < 2047)
+            shift++;
+    }
+    for (auto& [key, value] : labels) {
+        if (value >= lineNumber) 
+            value -= shift;
+    }
+    for (int i : relMem){
+        if (i >= lineNumber)
+            i -= shift;
+    }
+    if (op == "AB")
+        lineNumber += 3-shift;
+    if (op == "A")
+        lineNumber += 1-shift;
 }
