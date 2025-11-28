@@ -6,9 +6,10 @@ output logic [7:0] LEDR
 logic clk, we;
 logic [1:0] state = 0;
 logic [7:0] R [3:0];
-logic [7:0] A, FR, IR, instruction, din, dout;
+logic [7:0] A, FR, IF, instruction, din, dout;
+logic [7:0] IR = 8'b0;
 logic [15:0] PC = 0;
-logic [15:0] AB, RA, SP, IJA, addr;
+logic [15:0] AB, RA, SP, IJA, IRA, addr;
 logic branch;
 logic [7:0] ALUout;
 
@@ -17,7 +18,7 @@ assign clk = MAX10_CLK1_50;
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("testcode/test.bin", RAM);
+    $readmemb("testcode/for.bin", RAM);
 end
 
 always_comb begin
@@ -53,7 +54,7 @@ always_comb begin
 			case(instruction[4:2])
 			3'b000:
 				ALUout = A + R[instruction[1:0]];
-			3'b001, 3'b111:
+			3'b001:
 				ALUout = A - R[instruction[1:0]];
 			3'b010:
 				ALUout = A <<< R[instruction[1:0]];
@@ -76,21 +77,21 @@ always_comb begin
 			we = 1;
 			addr = SP - 1;
 			din = R[instruction[1:0]]; end
-		8'b101100??:								//RA/AB <-> S
+		8'b101110??:								//RA/AB <-> S
 			addr = SP;
-		8'b10110100: begin						
+		8'b10111100: begin						
 			we = 1;
 			addr = SP - 1;
 			din = RA[7:0]; end
-		8'b10110101:  begin
+		8'b10111101:  begin
 			we = 1;
 			addr = SP - 1;
 			din = RA[15:8]; end
-		8'b10110110: begin						
+		8'b10111110: begin						
 			we = 1;
 			addr = SP - 1;
 			din = AB[7:0]; end
-		8'b10110111: begin
+		8'b10111111: begin
 			we = 1;
 			addr = SP - 1;
 			din = AB[15:8]; end
@@ -104,7 +105,7 @@ always_comb begin
 			addr = AB;
 		8'b111000??:								//R <-> [AB + PC]										
 			addr = AB + PC;
-		8'b111000??: begin																		
+		8'b111001??: begin																		
 			we = 1;
 			addr = AB + PC;
 			din = R[instruction[1:0]]; end
@@ -143,6 +144,12 @@ always_ff @(posedge clk) begin
 
 	//Main execution
 	if (state == 2) begin
+		if (IR != 0) begin //interrupt!
+			PC <= IJA;
+			IRA <= PC;
+		end
+		
+		else begin
 		casez(instruction)
 		8'b0000????: 								//IMM AB
 			AB <= {{12{instruction[3]}},instruction[3:0]};
@@ -190,19 +197,19 @@ always_ff @(posedge clk) begin
 			SP <= SP + 1; end
 		8'b101101??:
 			SP <= SP - 1;
-		8'b10110000: begin						//RA/AB <-> S
+		8'b10111000: begin						//RA/AB <-> S
 			RA <= {{8{dout}},dout};
 			SP <= SP + 1; end
-		8'b10110001: begin
+		8'b10111001: begin
 			RA <= {dout,RA[7:0]};
 			SP <= SP + 1; end
-		8'b10110010: begin						
+		8'b10111010: begin						
 			AB <= {{8{dout}},dout};
 			SP <= SP + 1; end
-		8'b10110011: begin
+		8'b10111011: begin
 			AB <= {dout,AB[7:0]};
 			SP <= SP + 1; end
-		8'b101101??:						
+		8'b101111??:						
 			SP <= SP - 1;
 		8'b110000??:								//A <-> R
 			A <= R[instruction[1:0]];
@@ -222,13 +229,15 @@ always_ff @(posedge clk) begin
 			AB <= {R[instruction[1:0]],AB[7:0]};
 		8'b111000??:								//R <-> [AB + PC]										
 			R[instruction[1:0]] <= dout;
-		8'b111000??:																			
+		8'b111001??:																			
 			A <= A;
 		8'b11101000:								//A <-> [AB + PC]
 			A <= dout;
 		8'b11101001:							
 			A <= A;
-		8'b1110101?:								//Unused
+		8'b11101010:								//PC <- IRA
+			PC <= IRA;
+		8'b11101011:								//Unused
 			A <= A;
 		8'b11101100:								//A -> AB
 			AB <= {{8{A[7]}},A};
@@ -275,9 +284,10 @@ always_ff @(posedge clk) begin
 		default:
 			A <= A;
 		endcase
-
+		
 		if (instruction[7:5] != 3'b011 && instruction != 8'b11111010)
 			PC <= PC + 1;
+		end
 	end
 	
 	//Memory
@@ -294,4 +304,9 @@ always_ff @(posedge clk) begin
 		
 	state <= state + 1;
 end
+
+//always_ff @(posedge SW)
+//IR <= 8'b00000001;
+
+
 endmodule
