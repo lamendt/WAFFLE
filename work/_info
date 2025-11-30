@@ -1,49 +1,51 @@
 m255
 K4
 z2
-Z0 !s12c _opt1
+Z0 !s12c _opt2
 Z1 !s99 nomlopt
-!s12c _opt2
+Z2 !s12c _opt1
 R1
 R0
 R1
-R0
-R1
-R0
-R1
-Z2 !s12c _opt
-R1
 R2
 R1
 R2
 R1
 R2
 R1
-R2
+Z3 !s12c _opt
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
 R1
-R2
+R3
+R1
+R3
+R1
+R3
+R1
+R3
+R1
+R3
 R1
 !s11f vlog 2024.3 2024.09, Sep 10 2024
 13
@@ -52,99 +54,99 @@ R1
 !i10e 25
 !i10f 100
 cModel Technology
-Z3 dC:/Users/levia/Documents/CPEN211/Lab2FA
+Z4 dC:/Users/levia/Documents/CPEN211/Lab2FA
 T_opt
 !s110 1763881675
 VX05]zaFn^n0jPLdD?oIXg0
-Z4 04 2 4 work tb fast 0
+Z5 04 2 4 work tb fast 0
 =8-9c5a4409d0bf-6922b2ca-2e7-42b4
 R1
-Z5 !s12f OEM100
-Z6 !s12b OEM100
-Z7 !s124 OEM10U2 
-Z8 !s135 nogc
-Z9 o-quiet -auto_acc_if_foreign -work work +acc
-Z10 tCvgOpt 0
+Z6 !s12f OEM100
+Z7 !s12b OEM100
+Z8 !s124 OEM10U2 
+Z9 !s135 nogc
+Z10 o-quiet -auto_acc_if_foreign -work work +acc
+Z11 tCvgOpt 0
 n@_opt
-Z11 OL;O;2024.3;79
-R3
+Z12 OL;O;2024.3;79
+R4
 T_opt1
 !s110 1763940865
 VVR^21dB]21;RO[o3M7Gmk3
-R4
+R5
 =1-9c5a4409d0bf-69239a01-32-3a1c
 R1
-R5
 R6
 R7
 R8
 R9
 R10
-n@_opt1
 R11
-T_opt2
-!s110 1763940711
-VLG=m>m7nhIaGU[NcaZhH02
+n@_opt1
+R12
 R4
-=1-9c5a4409d0bf-69239966-29c-63ec
-R1
+T_opt2
+!s110 1764463103
+VR12TEQ7ie9AXl<SHoNOY;1
 R5
+=1-9c5a4409d0bf-692b91fd-3be-16f8
+R1
 R6
 R7
 R8
-o-quiet -auto_acc_if_foreign -work work
+R9
 R10
-n@_opt2
 R11
-R3
+n@_opt2
+R12
 vtb
 2C:/Users/levia/Documents/8bitCPU/tb.sv
-Z12 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z13 !s110 1763940851
+Z13 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z14 !s110 1764463087
 !i10b 1
 !s100 ZSgLA@z:f4CIkjca0MzYi1
 IJCzmJ@_6;BP?BWNcC:9I13
 S1
-Z14 dC:/Users/levia/Documents/8bitCPU
+Z15 dC:/Users/levia/Documents/8bitCPU
 w1763927203
 8C:/Users/levia/Documents/8bitCPU/tb.sv
 FC:/Users/levia/Documents/8bitCPU/tb.sv
-!i122 47
+!i122 49
 L0 1 8
-Z15 VDg1SIo80bB@j0V0VzS_@n1
-Z16 OL;L;2024.3;79
+Z16 VDg1SIo80bB@j0V0VzS_@n1
+Z17 OL;L;2024.3;79
 r1
 !s85 0
 31
-Z17 !s108 1763940851.000000
+Z18 !s108 1764463087.000000
 !s107 C:/Users/levia/Documents/8bitCPU/tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/tb.sv|
 !i113 0
-Z18 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
-R10
+Z19 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R11
 vTop
 2C:/Users/levia/Documents/8bitCPU/Top.sv
-R12
 R13
-!i10b 1
-!s100 Fk_PiKIG3Yf;oN5nb8bff0
-I4d2_AH6fdSIP^NS42>=[h2
-S1
 R14
-w1763940847
+!i10b 1
+!s100 @Xc[L9Fgho0YaI7UbBDaf3
+IkhbDnNP@lo:eB:VBIc7Qf0
+S1
+R15
+w1764461177
 8C:/Users/levia/Documents/8bitCPU/Top.sv
 FC:/Users/levia/Documents/8bitCPU/Top.sv
-!i122 48
-L0 1 272
-R15
+!i122 50
+L0 1 312
 R16
+R17
 r1
 !s85 0
 31
-R17
+R18
 !s107 C:/Users/levia/Documents/8bitCPU/Top.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/Top.sv|
 !i113 0
-R18
-R10
+R19
+R11
 n@top

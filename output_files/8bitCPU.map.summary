@@ -1,10 +1,10 @@
-Analysis & Synthesis Status : Successful - Thu Nov 27 15:31:03 2025
+Analysis & Synthesis Status : Successful - Sat Nov 29 16:44:08 2025
 Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 Revision Name : 8bitCPU
 Top-level Entity Name : Top
 Family : MAX 10
 Total logic elements : 15,880
-    Total combinational functions : 7,650
+    Total combinational functions : 7,643
     Dedicated logic registers : 8,370
 Total registers : 8370
 Total pins : 17

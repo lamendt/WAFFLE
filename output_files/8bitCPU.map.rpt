@@ -1,5 +1,5 @@
 Analysis & Synthesis report for 8bitCPU
-Thu Nov 27 15:31:03 2025
+Sat Nov 29 16:44:08 2025
 Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 
 
@@ -44,13 +44,13 @@ on the Quartus Prime software download page.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Nov 27 15:31:03 2025           ;
+; Analysis & Synthesis Status        ; Successful - Sat Nov 29 16:44:08 2025           ;
 ; Quartus Prime Version              ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
 ; Revision Name                      ; 8bitCPU                                         ;
 ; Top-level Entity Name              ; Top                                             ;
 ; Family                             ; MAX 10                                          ;
 ; Total logic elements               ; 15,880                                          ;
-;     Total combinational functions  ; 7,650                                           ;
+;     Total combinational functions  ; 7,643                                           ;
 ;     Dedicated logic registers      ; 8,370                                           ;
 ; Total registers                    ; 8370                                            ;
 ; Total pins                         ; 17                                              ;
@@ -162,7 +162,7 @@ on the Quartus Prime software download page.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.2%      ;
+;     Processor 2            ;   0.3%      ;
 ;     Processor 3            ;   0.2%      ;
 ;     Processor 4            ;   0.2%      ;
 +----------------------------+-------------+
@@ -185,14 +185,14 @@ on the Quartus Prime software download page.
 +---------------------------------------------+---------------------+
 ; Estimated Total logic elements              ; 15,880              ;
 ;                                             ;                     ;
-; Total combinational functions               ; 7650                ;
+; Total combinational functions               ; 7643                ;
 ; Logic element usage by number of LUT inputs ;                     ;
 ;     -- 4 input functions                    ; 6131                ;
 ;     -- 3 input functions                    ; 1316                ;
-;     -- <=2 input functions                  ; 203                 ;
+;     -- <=2 input functions                  ; 196                 ;
 ;                                             ;                     ;
 ; Logic elements by mode                      ;                     ;
-;     -- normal mode                          ; 7509                ;
+;     -- normal mode                          ; 7502                ;
 ;     -- arithmetic mode                      ; 141                 ;
 ;                                             ;                     ;
 ; Total registers                             ; 8370                ;
@@ -205,7 +205,7 @@ on the Quartus Prime software download page.
 ;                                             ;                     ;
 ; Maximum fan-out node                        ; MAX10_CLK1_50~input ;
 ; Maximum fan-out                             ; 8370                ;
-; Total fan-out                               ; 54057               ;
+; Total fan-out                               ; 54050               ;
 ; Average fan-out                             ; 3.37                ;
 +---------------------------------------------+---------------------+
 
@@ -215,7 +215,7 @@ on the Quartus Prime software download page.
 +----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
 ; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name ; Entity Name ; Library Name ;
 +----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
-; |Top                       ; 7650 (7650)         ; 8370 (8370)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 17   ; 0            ; 0          ; |Top                ; Top         ; work         ;
+; |Top                       ; 7643 (7643)         ; 8370 (8370)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 17   ; 0            ; 0          ; |Top                ; Top         ; work         ;
 +----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
@@ -271,12 +271,12 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 ;     ENA               ; 8310                        ;
 ;     ENA SLD           ; 50                          ;
 ;     plain             ; 10                          ;
-; cycloneiii_lcell_comb ; 7650                        ;
+; cycloneiii_lcell_comb ; 7643                        ;
 ;     arith             ; 141                         ;
 ;         2 data inputs ; 90                          ;
 ;         3 data inputs ; 51                          ;
-;     normal            ; 7509                        ;
-;         1 data inputs ; 46                          ;
+;     normal            ; 7502                        ;
+;         1 data inputs ; 39                          ;
 ;         2 data inputs ; 67                          ;
 ;         3 data inputs ; 1265                        ;
 ;         4 data inputs ; 6131                        ;
@@ -291,7 +291,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:20     ;
+; Top            ; 00:00:21     ;
 +----------------+--------------+
 
 
@@ -301,7 +301,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
-    Info: Processing started: Thu Nov 27 15:30:33 2025
+    Info: Processing started: Sat Nov 29 16:43:36 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off 8bitCPU -c 8bitCPU
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -312,7 +312,7 @@ Info (12021): Found 1 design units, including 1 entities, in source file tb.sv
 Info (12021): Found 1 design units, including 1 entities, in source file ram.sv
     Info (12023): Found entity 1: RAM File: C:/Users/levia/Documents/8bitCPU/RAM.sv Line: 1
 Info (12127): Elaborating entity "Top" for the top level hierarchy
-Warning (10850): Verilog HDL warning at Top.sv(21): number of words (9) in memory file does not match the number of elements in the address range [0:1023] File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 21
+Warning (10850): Verilog HDL warning at Top.sv(21): number of words (8) in memory file does not match the number of elements in the address range [0:1023] File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 21
 Warning (10230): Verilog HDL assignment warning at Top.sv(78): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 78
 Warning (10230): Verilog HDL assignment warning at Top.sv(84): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 84
 Warning (10230): Verilog HDL assignment warning at Top.sv(88): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/Top.sv Line: 88
@@ -353,9 +353,9 @@ Info (21057): Implemented 15913 device resources after synthesis - the final res
     Info (21059): Implemented 8 output pins
     Info (21061): Implemented 15896 logic cells
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 32 warnings
-    Info: Peak virtual memory: 4899 megabytes
-    Info: Processing ended: Thu Nov 27 15:31:03 2025
-    Info: Elapsed time: 00:00:30
-    Info: Total CPU time (on all processors): 00:00:43
+    Info: Peak virtual memory: 4884 megabytes
+    Info: Processing ended: Sat Nov 29 16:44:08 2025
+    Info: Elapsed time: 00:00:32
+    Info: Total CPU time (on all processors): 00:00:47
 
 

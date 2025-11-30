@@ -18,7 +18,7 @@ assign clk = MAX10_CLK1_50;
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("testcode/for.bin", RAM);
+    $readmemb("testcode/SWtoLED.bin", RAM);
 end
 
 always_comb begin
