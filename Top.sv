@@ -9,8 +9,9 @@ logic [7:0] R [3:0];
 logic [7:0] A, FR, IF, instruction, din, dout;
 logic [7:0] IR = 8'b0;
 logic [15:0] PC = 0;
-logic [15:0] AB, RA, SP, IJA, IRA, addr;
+logic [15:0] AB, RA, SP, IJA, IRA, PB, PL, addr;
 logic branch;
+logic mode = 0;
 logic [7:0] ALUout;
 
 assign clk = MAX10_CLK1_50;
@@ -103,22 +104,26 @@ always_comb begin
 			din = R[instruction[1:0]]; end
 		8'b11110000:								//A <-> [AB]
 			addr = AB;
-		8'b111000??:								//R <-> [AB + PC]										
-			addr = AB + PC;
+		8'b111000??: begin						//R <-> [AB + PB]										
+			addr = AB + PB;
 		8'b111001??: begin																		
-			we = 1;
-			addr = AB + PC;
+			if (PB + AB <= PL && PB + AB >= PB)
+				we = 1;
+			addr = AB + PB;
 			din = R[instruction[1:0]]; end
-		8'b11101000:								//A <-> [AB + PC]
-			addr = AB + PC;
+		8'b11101000:								//A <-> [AB + PB]
+			addr = AB + PB;
 		8'b11101001: begin							
-			we = 1;
-			addr = AB + PC;
+			if (PB + AB <= PL && PB + AB >= PB)
+				we = 1;
+			addr = AB + PB;
 			din = A; end
-		8'b11110001: begin
+		8'b11110001: begin						//A <-> [AB]
 			we = 1;
 			addr = AB;
 			din = A; end
+		8'b11110000: begin
+			addr = AB;
 		8'b11110010:								//A <-> S
 			addr = SP;
 		8'b11110011: begin
@@ -144,9 +149,10 @@ always_ff @(posedge clk) begin
 
 	//Main execution
 	if (state == 2) begin
-		if (IR != 0) begin //interrupt!
+		if (IR != 0 && mode == 1) begin //interrupt!
 			PC <= IJA;
 			IRA <= PC;
+			mode <= 0;
 		end
 		
 		else begin
@@ -167,8 +173,12 @@ always_ff @(posedge clk) begin
 			if (branch) begin
 				if(instruction[1] == 0)
 					PC <= AB;
-				else
+				else begin
+				if (PC + AB <= PL && PC + AB >= PB)
 					PC <= PC + AB;
+				else
+					IR[0] <= 1;
+				end
 				if(instruction[0] == 1)
 					RA <= PC+1;
 			end
@@ -227,22 +237,36 @@ always_ff @(posedge clk) begin
 			AB <= {{8{R[instruction[1:0]][7]}},R[instruction[1:0]]};
 		8'b110111??:
 			AB <= {R[instruction[1:0]],AB[7:0]};
-		8'b111000??:								//R <-> [AB + PC]										
-			R[instruction[1:0]] <= dout;
-		8'b111001??:																			
-			A <= A;
-		8'b11101000:								//A <-> [AB + PC]
-			A <= dout;
+		8'b111000??: begin						//R <-> [AB + PB]										
+			if (PB + AB > PL || PB + AB < PB)
+				IR[0] <= 1;
+			else
+				R[instruction[1:0]] <= dout;	
+			end
+		8'b111001??: begin																			
+			if (PB + AB > PL || PB + AB < PB)
+				IR[0] <= 1;
+			end
+		8'b11101000:								//A <-> [AB + PB]
+			if (PB + AB > PL || PB + AB < PB)
+				IR[0] <= 1;
+			else
+				A <= dout;	
+			end
 		8'b11101001:							
-			A <= A;
-		8'b11101010:								//PC <- IRA
+			if (PB + AB > PL || PB + AB < PB)
+				IR[0] <= 1;
+			end
+		8'b11101010:								//Kernel
+			mode = 0;
+		8'b11101011:								//User
+			mode = 1'b1;
+		8'b11101100:								//PB <- AB
+			PB <= AB;
+		8'b11101101: begin						//Interrupt ret
 			PC <= IRA;
-		8'b11101011:								//Unused
-			A <= A;
-		8'b11101100:								//A -> AB
-			AB <= {{8{A[7]}},A};
-		8'b11101101:
-			AB <= {A,AB[7:0]};
+			mode <= 1;
+			end
 		8'b11101110:								//A <-> IR
 			A <= IR;
 		8'b11101111:
@@ -271,8 +295,8 @@ always_ff @(posedge clk) begin
 			AB <= SP;
 		8'b11111010:								//RA -> PC
 			PC <= RA;
-		8'b11111011:								//PC -> AB
-			AB <= PC;
+		8'b11111011:								//PL <- AB
+			PL <= AB;
 		8'b11111100:								//NOP
 			A <= A;
 		8'b11111101:								//HALT 
@@ -285,7 +309,7 @@ always_ff @(posedge clk) begin
 			A <= A;
 		endcase
 		
-		if (instruction[7:5] != 3'b011 && instruction != 8'b11111010)
+		if (instruction[7:5] != 3'b011 && instruction != 8'b11111010 && instruction != 8'b11101101)
 			PC <= PC + 1;
 		end
 	end

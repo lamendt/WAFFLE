@@ -7,370 +7,485 @@
 #include <bitset>
 #include <unordered_map>
 #include <cctype>
+#include <unordered_set>
 
 using namespace std;
 
+unordered_map<string, int> labels;
+unordered_map<int, int> relLengths;
+
+string fileName;
+string inFileName;
+string intFileName;
+string outFileName;
+ifstream inFile;
+fstream intFile;
+ofstream outFile;
+
+int lineNumber = 0;
+
+int calcLinesForInstruction(vector<string> words);
+int calculateImmediate(string word);
+int calculateImmediateLength(string word);
+string toBinary(int num, int bits);
+string toSignedImmediate(int num, int bits);
+void shiftLabels(int startLine, int amount);
+void labelPass();
+void optimizationPass();
+void instructionPass();
+
 int main() {
-    stringstream workingFile;
-    unordered_map<string, int> labels;
-    
-    string filename;
-    cin >> filename;
+    cin >> fileName;
+    //filename = "test";
+    inFileName = fileName + ".asm";
+    intFileName = fileName + ".int";
+    outFileName = fileName + ".bin";
+    inFile.open(inFileName);
+    intFile.open(intFileName);
+    outFile.open(outFileName);
 
-    string infileName = filename + ".asm";
-    string binfileName = filename + ".bin";
-    ifstream infile(infileName);
+    labelPass();
+    optimizationPass();
+    instructionPass();
 
-    string line;
-    int lineNumber = 0;
+    return 0;
+}
 
-    while (getline(infile, line)) {
-        
-        if (line.empty() || line.substr(0, 2) == "//") {
-            continue; // Skip empty lines and comments
+string toBinary(int num, int bits) {
+    bitset<16> bin(num);
+    return bin.to_string().substr(16 - bits);
+}
+
+string toSignedImmediate(int num, int bits) {
+    bitset<16> bin(num);
+    return bin.to_string().substr(16 - bits);
+}
+
+int calculateImmediateLength(int IMM) {
+    int length = 1;
+    if (abs(IMM) > 7)
+        length++;
+    if (abs(IMM) > 127)
+        length++;
+    if (abs(IMM) > 2047)
+        length++;
+    return length;
+}
+
+int calculateImmediate(string word) {
+    int IMM;
+    if (isdigit(word.at(0)) || word.at(0) == '-')
+        IMM = stoi(word);
+    else if (isalpha(word.at(0))) {
+        IMM = labels.at(word) - lineNumber;
+    }
+    else if (word.at(0) == '$') {
+        IMM = stoi(word.substr(1), nullptr, 16);
+    }
+    else if (word.at(0) == '%') {
+        IMM = stoi(word.substr(1), nullptr, 2);
+    }
+    return IMM;
+}
+
+int calcLinesForInstruction(vector<string> words) {
+    string op = words[0];
+    int lines = 1;
+    if (op == "IMM") {
+        if (words.at(1) == "AB") {
+            lines = calculateImmediateLength(calculateImmediate(words.at(2)));
         }
-        else if (line[0] == ':') {
-            // Handle label
-            labels.insert_or_assign(line.substr(1), lineNumber);
-            continue;
+        else if (words.at(1) == "A") {
+            lines = calculateImmediateLength(calculateImmediate(words.at(2)));
+        }
+        else if (words.at(1).at(0) == 'R') {
+            lines = 1 + calculateImmediateLength(calculateImmediate(words.at(2)));
+        }
+    }
+    else if (op.at(0) == 'B' || op.at(0) == 'J' || op == "CALL") {
+        if (words.at(1) == "REL" || words.at(1) == "ABS") {
+            //do nothing, lines = 1
         }
         else {
-            workingFile << line << "\n";
+            lines = 1 + calculateImmediateLength(calculateImmediate(words.at(1)));
+        }
+    }
+    else if (op == "STO" || op == "LD") {
+        if (words.size() == 3) {
+            lines = 1 + calculateImmediateLength(calculateImmediate(words.at(2)));
+        }
+    }
+    else if (op == "MV" && words.at(1) == "AB" && words.size() == 4) {
+        lines = 2;
+    }
+    else if ((op == "PUSH" || op == "POP") && (words.at(1) == "AB" || words.at(1) == "RA")) {
+        lines = 2;
+    }
+    return lines;
+}
+
+void shiftLabels(int startLine, int amount) {
+    for (auto& [key, value] : labels) {
+        if (value >= startLine) 
+            value += amount;
+    }
+    for (auto& [key, value] : relLengths) {
+        if (key >= startLine) {
+            int keyVal = key;
+            relLengths.erase(key);
+            relLengths.insert_or_assign(keyVal + amount, value);
+        }
+    }
+}
+
+void labelPass() {
+    string line;
+    lineNumber = 0;
+    while (getline(inFile, line)) {  
+        if (line[0] == ':') {
+            labels.insert_or_assign(line.substr(1), lineNumber);
+        }
+        else if (line.empty() || line.substr(0, 2) == "//") {
+            continue; // Skip empty lines and comments
+        }
+        else {
             istringstream iss(line);
             vector<string> words;
             string word;
-            while (iss >> word)
-                words.push_back(word);
-            string op = words[0];
-
-            if (op == "IMM") {
-                if (words.at(1) == "AB") {
-                    lineNumber += 3;
+            while (iss >> word) { //delete inline comments
+                if (word.substr(0,2) != "//") {
+                    words.push_back(word);
+                    intFile << word << " ";
                 }
-                else if (words.at(1) == "A") {
-                    lineNumber += 1;
-                }    
             }
-            else if (op == "J") {
-                lineNumber += 4;
-            }
-            lineNumber++;
+            lineNumber += calcLinesForInstruction(words);
+            intFile << "\n";
         }
     }
+    inFile.close();
+}
 
-    infile.close();
-    ofstream binfile(binfileName);
+void optimizationPass() {
+    string line;
     lineNumber = 0;
+    istringstream iss(line);
+    vector<string> words;
+    string word;
+    int prevLength = -1;
+    int length = 0;
+    while (prevLength != length) {
+        lineNumber = 0;
+        while (getline(intFile, line)) {
+            while (iss >> word) {
+                words.push_back(word);
+            }
+            for (auto& [key, value] : relLengths) {
+                int shiftAmount = value - calcLinesForInstruction(words);
+                if (shiftAmount > 0) {
+                    shiftLabels(key, shiftAmount);
+                }
+            }
+        }
+        prevLength = length;
+        length = lineNumber;
+    }
+}
 
-    while (getline(workingFile, line)) {
-        // Process instruction
-        istringstream iss(line);
-        vector<string> words;
-        string word;
-        while (iss >> word)
+void instructionPass() {
+    string line;
+    lineNumber = 0;
+    istringstream iss(line);
+    vector<string> words;
+    string word;
+    while (getline(intFile, line)) {
+        while (iss >> word) {
             words.push_back(word);
+        }
         string op = words[0];
         if (op == "IMM") {
             if (words.at(1) == "AB") {
-                bitset<16> IMM = stoi(words.at(2));
-                binfile << "0000" << IMM.to_string().substr(12) << "\n";
-                binfile << "0001" << IMM.to_string().substr(8, 4) << "\n";
-                binfile << "0010" << IMM.to_string().substr(4, 4) << "\n";
-                binfile << "0011" << IMM.to_string().substr(0, 4) << "\n";
-                lineNumber += 3;
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(2)), 16).substr(i * 4, 4) << "\n";
             }
             else if (words.at(1) == "A") {
-                bitset<8> IMM = stoi(words.at(2));
-                binfile << "0100" << IMM.to_string().substr(4) << "\n";
-                binfile << "0101" << IMM.to_string().substr(0,4) << "\n";
-                lineNumber += 1;
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(2)), 8).substr(i * 4, 4) << "\n";
             }    
+            else if (words.at(1).at(0) == 'R') {
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(2)), 8).substr(i * 4, 4) << "\n";
+                outFile << "110001" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+            }
         }
         else if (op == "MV") {
             if (words.at(1) == "A") {
                 if (words.at(2).at(0) == 'R') {
-                    bitset<2> reg = stoi(words.at(2).substr(1));
-                    binfile << "110000" << reg.to_string() << "\n";
+                    outFile << "110000" << toBinary(stoi(words.at(2).substr(1)), 2) << "\n";
                 }
-                if (words.at(2) == "IR")
-                    binfile << "11101110" << "\n";
+                else if (words.at(2) == "IR")
+                    outFile << "11101110" << "\n";
             }
             else if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                if (words.at(2) == "A")
-                    binfile << "110001" << reg.to_string() << "\n";
+                if (words.at(2) == "A") {
+                    outFile << "110001" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                }
             }
             else if (words.at(1) == "AB" || words.at(1) == "AB_bot") {
-                if (words.at(2).at(0) == 'R') {
-                    bitset<2> reg = stoi(words.at(2).substr(1));
-                    binfile << "110110" << reg.to_string() << "\n";
+                if (words.size() == 4) {
+                    outFile << "110110" << toBinary(stoi(words.at(2).substr(1)), 2) << "\n";
+                    outFile << "110111" << toBinary(stoi(words.at(3).substr(1)), 2) << "\n";
                 }
-                if (words.at(2) == "A") {
-                    binfile << "11101100" << "\n";
-                }
-                if (words.at(2) == "SP") {
-                    binfile << "11111001" << "\n";
+                else {
+                    if (words.at(2).at(0) == 'R') {
+                        outFile << "110110" << toBinary(stoi(words.at(2).substr(1)), 2) << "\n";
+                    }
+                    else if (words.at(2) == "SP") {
+                        outFile << "11111001" << "\n";
+                    }
                 }
             }
-             else if (words.at(1) == "AB_top") {
-                if (words.at(2).at(0) == 'R') {
-                    bitset<2> reg = stoi(words.at(2).substr(1));
-                    binfile << "110111" << reg.to_string() << "\n";
-                }
-                if (words.at(2) == "A") {
-                    binfile << "11101101" << "\n";
-                }
+            else if (words.at(1) == "AB_top") {
+                outFile << "110111" << toBinary(stoi(words.at(2).substr(1)), 2) << "\n";
             }
             else if (words.at(1) == "IR") {
-                if (words.at(2) == "A") {
-                    binfile << "11101111" << "\n";
-                }
+                outFile << "11101111" << "\n";
             }
             else if (words.at(1) == "SP") {
-                if (words.at(2) == "AB") {
-                    binfile << "11111000" << "\n";
-                }
+                outFile << "11111000" << "\n";
             }
             else if (words.at(1) == "IJA") {
-                if (words.at(2) == "AB") {
-                    binfile << "11111111" << "\n";
-                }
+                outFile << "11111111" << "\n";
             }
-        } 
-        else if (op == "ADD") {
-            if (words.size() == 2) {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "100000" << reg.to_string() << "\n";
-
+            else if (words.at(1) == "PB") {
+                outFile << "11101100" << "\n";
             }
-            else {
-                if (words.at(1) == "A") {
-                        bitset<2> reg = stoi(words.at(2).substr(1));
-                        binfile << "100000" << reg.to_string() << "\n";
-                }
-                else if (words.at(1).at(0) == 'R') {
-                    if (words.at(2) == "-1" || words.at(2) == "1") {
-                        bitset<2> reg = stoi(words.at(1).substr(1));
-                        binfile << "11010" << (stoi(words.at(2)) + 1) / 2 << reg.to_string() << "\n";
-                    }
-                }
-                else if (words.at(1) == "AB") {
-                    if (words.at(2) == "-1" || words.at(2) == "1") {
-                        binfile << "1111011" << (stoi(words.at(2)) + 1) / 2 << "00" << "\n";
-                    }
-                    else if (words.at(2).at(0) == 'R') {
-                        bitset<2> reg = stoi(words.at(2).substr(1));
-                        binfile << "111010" << "00" << reg.to_string() << "\n";
-                    }
-                    else if (words.at(2) == "A") {
-                        binfile << "11111110" << "\n";
-                    }
-                }
+            else if (words.at(1) == "PL") {
+                outFile << "11111011" << "\n";
             }
-        }
-        else if (op == "B") {
-            lineNumber += 4;
-            bitset<16> IMM;
-            if (isalpha(words.at(3).at(0)))
-                IMM = labels.at(words.at(3)) - lineNumber;
-            else if (isdigit(words.at(3).at(0)))
-                IMM = stoi(words.at(3));
-            binfile << "0000" << IMM.to_string().substr(12) << "\n";
-            binfile << "0001" << IMM.to_string().substr(8, 4) << "\n";
-            binfile << "0010" << IMM.to_string().substr(4, 4) << "\n";
-            binfile << "0011" << IMM.to_string().substr(0, 4) << "\n";
-            if (words.at(1) == "EQ") {
-                binfile << "011000";
+             else if (words.at(1) == "IRA") {
+                outFile << "11111101" << "\n";
             }
-            else if (words.at(1) == "NEQ") {
-                binfile << "011001";
-            }
-            else if (words.at(1) == "LTU" || words.at(1) == "BORROW" || words.at(1) == "NOCARRY") {
-                binfile << "011010";
-            }
-            else if (words.at(1) == "LTS") {
-                binfile << "011011";
-            }
-            else if (words.at(1) == "GTEU" || words.at(1) == "CARRY" || words.at(1) == "NOBORROW") {
-                binfile << "011100";
-            }
-            else if (words.at(1) == "GTES") {
-                binfile << "011101";
-            }
-            else if (words.at(1) == "J") {
-                binfile << "011111";
-            }
-            if (isalpha(words.at(3).at(0)))
-                binfile << "1";
-            else if (isdigit(words.at(3).at(0)))
-                binfile << "0";
-            if (words.at(3) == "LINK") {
-                binfile << "1\n";
-            }
-            else if (words.at(2) == "NOLINK") {
-                binfile << "0\n";
-            }
-        }
-        else if (op == "J" || op == "JL") {
-            lineNumber += 4;
-            bitset<16> IMM;
-            if (isalpha(words.at(1).at(0)))
-                IMM = labels.at(words.at(1)) - lineNumber;
-            else if (isdigit(words.at(1).at(0)))
-                IMM = stoi(words.at(1));
-            binfile << "0000" << IMM.to_string().substr(12) << "\n";
-            binfile << "0001" << IMM.to_string().substr(8, 4) << "\n";
-            binfile << "0010" << IMM.to_string().substr(4, 4) << "\n";
-            binfile << "0011" << IMM.to_string().substr(0, 4) << "\n";
-            if (op == "J")
-                binfile << "01111110";
-            else if (op == "JL")
-                binfile << "01111111";
         }
         else if (op == "STO") {
-            if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "110011" << reg.to_string() << "\n";
+            if (words.size() == 3) {
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(2)), 16).substr(i * 4, 4) << "\n";
+                if (words.at(1).at(0) == 'R') {
+                    outFile << "110011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                }
+                else if (words.at(1) == "A") {
+                    outFile << "11110001" << "\n";
+                }
+            }
+            else if (words.at(1).at(0) == 'R') {
+                outFile << "110011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
             }
             else if (words.at(1) == "A") {
-                binfile << "11110001";
+                outFile << "11110001" << "\n";
             }
         }
         else if (op == "LD") {
-            if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "110010" << reg.to_string() << "\n";
+            if (words.size() == 3) {
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(2)), 16).substr(i * 4, 4) << "\n";
+                if (words.at(1).at(0) == 'R') {
+                    outFile << "110010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                }
+                else if (words.at(1) == "A") {
+                    outFile << "11110000" << "\n";
+                }
+            }
+            else if (words.at(1).at(0) == 'R') {
+                outFile << "110010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
             }
             else if (words.at(1) == "A") {
-                binfile << "11110000";
+                outFile << "11110000" << "\n";
+            }
+        }
+        else if (op == "ADD") {
+            if (words.size() == 2) {
+                outFile << "100000" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+            }
+            else {
+                if (words.at(1).at(0) == 'R') {
+                    outFile << "11010" << (stoi(words.at(2)) + 1) / 2 << toBinary(stoi(words.at(1).substr(1)), 2) <<"\n";
+                }
+                else if (words.at(1) == "AB") {
+                    if (words.at(2) == "A") {
+                        outFile << "11111110" << "\n";
+                    }
+                    else {
+                        outFile << "" << (stoi(words.at(2)) + 1) / 2 << "\n"; 
+                    }                    
+                }
             }
         }
         else if (op == "PUSH") {
             if (words.at(1) == "A") {
-                binfile << "11110011" << "\n";
-            }
-            else if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "101101" << reg.to_string() << "\n";
+                outFile << "11110011" << "\n";
             }
             else if (words.at(1) == "AB") {
-                lineNumber += 1;
-                binfile << "10111111" << "\n";
-                binfile << "10111110" << "\n";
+                outFile << "10111110" << "\n";
+                outFile << "10111111" << "\n";
             }
             else if (words.at(1) == "AB_bot") {
-                binfile << "10111110" << "\n";
-            }
-            else if (words.at(1) == "RA") {
-                lineNumber += 1;
-                binfile << "10111101" << "\n";
-                binfile << "10111100" << "\n";
+                outFile << "10111110" << "\n";
             }
             else if (words.at(1) == "FR") {
-                binfile << "11110101" << "\n";
+                outFile << "11110101" << "\n";
             }
-            else if (words.at(1) == "ALL") {
-                lineNumber += 9;
-                binfile << "11110011" << "\n";
-                binfile << "10110100" << "\n";
-                binfile << "10110101" << "\n";
-                binfile << "10110110" << "\n";
-                binfile << "10110111" << "\n";
-                binfile << "10111111" << "\n";
-                binfile << "10111110" << "\n";
-                binfile << "10111101" << "\n";
-                binfile << "10111100" << "\n";
-                binfile << "11110101" << "\n";
+            else if (words.at(1).at(0) == 'R') {
+                outFile << "101101" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+            }
+            else if (words.at(1) == "RA") {
+                outFile << "10111100" << "\n";
+                outFile << "10111101" << "\n";
+            }
+            else if (words.at(1) == "RA_bot") {
+                outFile << "10111100" << "\n";
             }
         }
-        else if (op == "POP") {
+        else if (op == "PUSH") {
             if (words.at(1) == "A") {
-                binfile << "11110010" << "\n";
-            }
-            else if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "101100" << reg.to_string() << "\n";
+                outFile << "11110010" << "\n";
             }
             else if (words.at(1) == "AB") {
-                lineNumber += 1;
-                binfile << "10111010" << "\n";
-                binfile << "10111011" << "\n";
+                outFile << "10111010" << "\n";
+                outFile << "10111011" << "\n";
             }
             else if (words.at(1) == "AB_bot") {
-                binfile << "10111010" << "\n";
-            }
-            else if (words.at(1) == "RA") {
-                lineNumber += 1;
-                binfile << "10111000" << "\n";
-                binfile << "10111001" << "\n";
+                outFile << "10111010" << "\n";
             }
             else if (words.at(1) == "FR") {
-                binfile << "11110100" << "\n";
+                outFile << "11110100" << "\n";
             }
-            else if (words.at(1) == "ALL") {
-                lineNumber += 9;
-                binfile << "11110100" << "\n";
-                binfile << "10111000" << "\n";
-                binfile << "10111001" << "\n";
-                binfile << "10111010" << "\n";
-                binfile << "10111011" << "\n";
-                binfile << "10110011" << "\n";
-                binfile << "10110010" << "\n";
-                binfile << "10110001" << "\n";
-                binfile << "10110000" << "\n";
-                binfile << "11110010" << "\n";
+            else if (words.at(1).at(0) == 'R') {
+                outFile << "101100" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
             }
+            else if (words.at(1) == "RA") {
+                outFile << "10111000" << "\n";
+                outFile << "10111001" << "\n";
+            }
+            else if (words.at(1) == "RA_bot") {
+                outFile << "10111000" << "\n";
+            }
+        }
+        else if (op.at(0) == 'B') {
+            bool isRel = false;
+            if (words.at(1) == "REL")
+                isRel = true;
+            else if (words.at(1) == "ABS")
+                isRel = false;
+            else {
+                if (words.at(1).at(0) == ':')
+                    isRel = true;
+                else
+                    isRel = false;
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(1)), 16).substr(i * 4, 4) << "\n";
+            }
+            if (op == "BEQ") {
+                outFile << "011000" << (isRel ? '0' : '1') << "0" << "\n";
+            }
+            else if (op == "BNE") {
+                outFile << "011001" << (isRel ? '0' : '1') << "0" << "\n";
+            }
+            else if (op == "BLTU" || op == "BORROW") {
+                outFile << "011010" << (isRel ? '0' : '1') << "0" << "\n";
+            }
+            else if (op == "BLTS") {
+                outFile << "011011" << (isRel ? '0' : '1') << "0" << "\n";
+            }
+            else if (op == "BGTEU" || op == "CARRY") {
+                outFile << "011100" << (isRel ? '0' : '1') << "0" << "\n";
+            }
+            else if (op == "BGTES") {
+                outFile << "011101" << (isRel ? '0' : '1') << "0" << "\n";
+            }
+        }
+        else if (op.at(0) == 'J') {
+            bool isRel = false;
+            if (words.at(1) == "REL")
+                isRel = true;
+            else if (words.at(1) == "ABS")
+                isRel = false;
+            else {
+                if (words.at(1).at(0) == ':')
+                    isRel = true;
+                else
+                    isRel = false;
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(1)), 16).substr(i * 4, 4) << "\n";
+            }
+            outFile << "011111" << (isRel ? '0' : '1') << "0" << "\n";
+        }
+        else if (op == "CAll") {
+            bool isRel = false;
+            if (words.at(1) == "REL")
+                isRel = true;
+            else if (words.at(1) == "ABS")
+                isRel = false;
+            else {
+                if (words.at(1).at(0) == ':')
+                    isRel = true;
+                else
+                    isRel = false;
+                for (int i = 0; i < calcLinesForInstruction(words) - 1; i += 1)
+                    outFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(words.at(1)), 16).substr(i * 4, 4) << "\n";
+            }
+            outFile << "011111" << (isRel ? '0' : '1') << "1" << "\n";
         }
         else if (op == "SUB") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100001" << reg.to_string() << "\n";
+            outFile << "100001" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
         }
         else if (op == "SLA") {
             if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "100010" << reg.to_string() << "\n";
+                outFile << "100010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
             }
             else if (isdigit(words.at(1).at(0))) {
-                bitset<3> IMM = stoi(words.at(1));
-                binfile << "10100" << IMM.to_string() << "\n";
-            }
+                outFile << "10100" << toBinary(stoi(words.at(1)), 3) << "\n";
+            }        
         }
         else if (op == "SRA") {
             if (words.at(1).at(0) == 'R') {
-                bitset<2> reg = stoi(words.at(1).substr(1));
-                binfile << "100011" << reg.to_string() << "\n";
+                outFile << "100011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
             }
             else if (isdigit(words.at(1).at(0))) {
-                bitset<3> IMM = stoi(words.at(1));
-                binfile << "10101" << IMM.to_string() << "\n";
-            }
+                outFile << "10101" << toBinary(stoi(words.at(1)), 3) << "\n";
+            }        
         }
         else if (op == "SRL") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100100" << reg.to_string() << "\n";
+            outFile << "100100" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
         }
         else if (op == "AND") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100101" << reg.to_string() << "\n";
+            outFile << "100101" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
         }
         else if (op == "OR") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100110" << reg.to_string() << "\n";
+            outFile << "100110" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
         }
         else if (op == "XOR") {
-            bitset<2> reg = stoi(words.at(1).substr(1));
-            binfile << "100111" << reg.to_string() << "\n";
+            outFile << "100111" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
         }
         else if (op == "NOP") {
-            binfile << "11111100" << "\n";
-        }
-        else if (op == "HLT") {
-            binfile << "11111101" << "\n";
+            outFile << "11111100" << "\n";
         }
         else if (op == "RET") {
-            binfile << "11111010" << "\n";
+            outFile << "11111010" << "\n";
         }
-        lineNumber++;
+        else if (op == "IRET") {
+            outFile << "11101101" << "\n";
+        }
+        else if (op == "USER") {
+            outFile << "11101010" << "\n";
+        }
+        else if (op == "KERNEL") {
+            outFile << "11101011" << "\n";
+        }
+        else if (op == "SYSCALL") {
+            outFile << "11101111" << "\n";
+        }
+        lineNumber += calcLinesForInstruction(words);
     }
-    binfile.close();
-}
+    outFile.close();
+    intFile.close();
+}   
