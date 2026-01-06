@@ -1,0 +1,4 @@
+IMM A 0 
+MV R0 A 
+ADD R0 1 
+J loop 

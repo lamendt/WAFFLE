@@ -6,7 +6,7 @@ MV R0 A
 :loop
 MV A R0
 SUB R1
-B GTEU NOLINK end
+BGTEU end
 ADD R0 1
 J loop
 :end

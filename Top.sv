@@ -107,14 +107,14 @@ always_comb begin
 		8'b111000??: begin						//R <-> [AB + PB]										
 			addr = AB + PB;
 		8'b111001??: begin																		
-			if (PB + AB <= PL && PB + AB >= PB)
+			if (PB + AB <= PL && PB + AB >= PB && mode == 1)
 				we = 1;
 			addr = AB + PB;
 			din = R[instruction[1:0]]; end
 		8'b11101000:								//A <-> [AB + PB]
 			addr = AB + PB;
 		8'b11101001: begin							
-			if (PB + AB <= PL && PB + AB >= PB)
+			if (PB + AB <= PL && PB + AB >= PB && mode == 1)
 				we = 1;
 			addr = AB + PB;
 			din = A; end
@@ -174,7 +174,7 @@ always_ff @(posedge clk) begin
 				if(instruction[1] == 0)
 					PC <= AB;
 				else begin
-				if (PC + AB <= PL && PC + AB >= PB)
+				if (PC + AB <= PL && PC + AB >= PB && mode == 1)
 					PC <= PC + AB;
 				else
 					IR[0] <= 1;
@@ -238,17 +238,17 @@ always_ff @(posedge clk) begin
 		8'b110111??:
 			AB <= {R[instruction[1:0]],AB[7:0]};
 		8'b111000??: begin						//R <-> [AB + PB]										
-			if (PB + AB > PL || PB + AB < PB)
+			if ((PB + AB > PL || PB + AB < PB) && mode == 1)
 				IR[0] <= 1;
 			else
 				R[instruction[1:0]] <= dout;	
 			end
 		8'b111001??: begin																			
-			if (PB + AB > PL || PB + AB < PB)
+			if ((PB + AB > PL || PB + AB < PB) && mode == 1)
 				IR[0] <= 1;
 			end
 		8'b11101000:								//A <-> [AB + PB]
-			if (PB + AB > PL || PB + AB < PB)
+			if ((PB + AB > PL || PB + AB < PB) && mode == 1)
 				IR[0] <= 1;
 			else
 				A <= dout;	
@@ -299,8 +299,8 @@ always_ff @(posedge clk) begin
 			PL <= AB;
 		8'b11111100:								//NOP
 			A <= A;
-		8'b11111101:								//HALT 
-			A <= A;
+		8'b11111101:								//IRA <- AB
+			IRA <= AB;
 		8'b11111110:								//AB += A
 			AB <= AB + {{8{A[7]}},A};
 		8'b11111111:								//AB -> IJA

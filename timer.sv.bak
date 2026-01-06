@@ -1,0 +1,4 @@
+module timer(input logic clk, 
+input logic [15:0] set,
+output logic [15:0] read,
+output logic interrupt)
