@@ -1,9 +1,0 @@
-IMM A 10 
-MV R1 A 
-IMM A 0 
-MV R0 A 
-MV A R0 
-SUB R1 
-BGTEU end 
-ADD R0 1 
-J loop 
