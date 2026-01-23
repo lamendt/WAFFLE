@@ -1,7 +1,7 @@
+//text
 :start
-IMM A 0
-//comment test
-MV R0 A
-:loop
-ADD R0 1 //inline comment
-J loop
+ADR R2, R3, address
+
+//data
+:string
+'Test

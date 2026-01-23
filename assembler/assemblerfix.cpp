@@ -30,12 +30,14 @@ ofstream outFile;
 int lineNumber = 0;
 
 int calcLinesForInstruction(vector<string> words, int ln);
+int calculateImmediate(string word);
 int calculateImmediate(string word, int ln);
+int calculateImmediateLength(string word);
 int calculateImmediateLength(string word, int ln);
 void writeImmediate(string word, int ln, ofstream& binFile);
-void writeImmediate(string word, int ln, ofstream& binFile, int r1, int r2);
+void writeImmediate(string word, ofstream& binFile);
+void writeImmediate(string word, ofstream& binFile, string r1, string r2);
 string toBinary(int num, int bits);
-string toSignedImmediate(int num, int bits);
 void shiftLabels(int startLine, int amount);
 void labelPass();
 void optimizationPass();
@@ -63,9 +65,16 @@ string toBinary(int num, int bits) {
     return bin.to_string().substr(16 - bits);
 }
 
-string toSignedImmediate(int num, int bits) {
-    bitset<16> bin(num);
-    return bin.to_string().substr(16 - bits);
+int calculateImmediateLength(string word) {
+    int IMM = calculateImmediate(word);
+    int length = 1;
+    if (IMM > 7 || IMM < -8)
+        length++;
+    if (IMM > 127 || IMM < -128)
+        length++;
+    if (IMM > 2047 || IMM < -2048)
+        length++;
+    return length;
 }
 
 int calculateImmediateLength(string word, int ln) {
@@ -80,18 +89,13 @@ int calculateImmediateLength(string word, int ln) {
     return length;
 }
 
-int calculateImmediate(string word, int ln) {
+int calculateImmediate(string word) {
     int IMM;
     if (isdigit(word.at(0)) || word.at(0) == '-')
         IMM = stoi(word);
     else if (isalpha(word.at(0))) {
         if (labels.count(word)) {
-            IMM = labels.at(word) - ln;
-            for (auto& i : relLengths) {
-                if (i.lineNumber == ln) {
-                    IMM -= (i.size - 1);
-                }
-            }
+            IMM = labels.at(word);
         }
         else {
             IMM = 3000;
@@ -106,17 +110,38 @@ int calculateImmediate(string word, int ln) {
     return IMM;
 }
 
-void writeImmediate(string word, int ln, ofstream& binFile) {
-    for (int i = 0; i < calculateImmediateLength(word, ln); i += 1)
-        binFile << "00" << toBinary(i, 2) << toSignedImmediate(calculateImmediate(word, ln), 16).substr(12-i * 4, 4) << "\n";
+int calculateImmediate(string word, int ln) {
+    int IMM;
+    if (labels.count(word)) {
+        IMM = labels.at(word) - ln;
+        for (auto& i : relLengths) {
+            if (i.lineNumber == ln) {
+                IMM -= (i.size - 1);
+            }
+        }
+    }
+    else {
+        IMM = 3000;
+    }
+    return IMM;
 }
 
-void writeImmediate(string word, int ln, ofstream& binFile, string r1, string r2) {
-    binFile << "010" << 0 << toSignedImmediate(calculateImmediate(word, ln), 16).substr(0, 4) << "\n";
-    binFile << "010" << 1 << toSignedImmediate(calculateImmediate(word, ln), 16).substr(4, 4) << "\n";
+void writeImmediate(string word, int ln, ofstream& binFile) {
+    for (int i = 0; i < calculateImmediateLength(word, ln); i += 1)
+        binFile << "00" << toBinary(i, 2) << toBinary(calculateImmediate(word, ln), 16).substr(12-i * 4, 4) << "\n";
+}
+
+void writeImmediate(string word, ofstream& binFile) {
+    for (int i = 0; i < calculateImmediateLength(word); i += 1)
+        binFile << "00" << toBinary(i, 2) << toBinary(calculateImmediate(word), 16).substr(12-i * 4, 4) << "\n";
+}
+
+void writeImmediate(string word, ofstream& binFile, string r1, string r2) {
+    binFile << "010" << 0 << toBinary(calculateImmediate(word), 16).substr(0, 4) << "\n";
+    binFile << "010" << 1 << toBinary(calculateImmediate(word), 16).substr(4, 4) << "\n";
     binFile << "110001" << toBinary(r1.at(1), 2) << "\n";
-    binFile << "010" << 0 << toSignedImmediate(calculateImmediate(word, ln), 16).substr(8, 4) << "\n";
-    binFile << "010" << 1 << toSignedImmediate(calculateImmediate(word, ln), 16).substr(12, 4) << "\n";
+    binFile << "010" << 0 << toBinary(calculateImmediate(word), 16).substr(8, 4) << "\n";
+    binFile << "010" << 1 << toBinary(calculateImmediate(word), 16).substr(12, 4) << "\n";
     binFile << "110001" << toBinary(r2.at(1), 2) << "\n";
 }
 
@@ -126,13 +151,13 @@ int calcLinesForInstruction(vector<string> words, int ln) {
     if (isupper(op.at(0))) {
         if (op == "IMM") {
             if (words.at(1) == "AB") {
-                lines = calculateImmediateLength(words.at(2), ln);
+                lines = calculateImmediateLength(words.at(2));
             }
             else if (words.at(1) == "A") {
-                lines = calculateImmediateLength(words.at(2), ln);
+                lines = calculateImmediateLength(words.at(2));
             }
             else if (words.at(1).at(0) == 'R') {
-                lines = 1 + calculateImmediateLength(words.at(2), ln);
+                lines = 1 + calculateImmediateLength(words.at(2));
             }
         }
         else if (op.at(0) == 'B' || op.at(0) == 'J' || op == "CALL") {
@@ -145,7 +170,7 @@ int calcLinesForInstruction(vector<string> words, int ln) {
         }
         else if (op == "STO" || op == "LD") {
             if (words.size() == 3) {
-                lines = 1 + calculateImmediateLength(words.at(2), ln);
+                lines = 1 + calculateImmediateLength(words.at(2));
             }
         }
         else if (op == "MV" && words.at(1) == "AB" && words.size() == 4) {
@@ -159,12 +184,12 @@ int calcLinesForInstruction(vector<string> words, int ln) {
                 lines = 6;
             }
             else {
-                lines = calculateImmediateLength(words.at(1), ln);
+                lines = calculateImmediateLength(words.at(1));
             }
         }
     }
     else if (op.at(0) != '\'') {
-        int len = calculateImmediateLength(op.substr(1), 0);
+        int len = calculateImmediateLength(op.substr(1));
         if (len < 3)
             lines = 1;
         else
@@ -283,15 +308,15 @@ void instructionPass() {
         if (isupper(op.at(0))) {
             if (op == "IMM") {
                 if (words.at(1) == "AB") {
-                    writeImmediate(words.at(2), lineNumber, outFile);
+                    writeImmediate(words.at(2), outFile);
                 }
                 else if (words.at(1) == "A") {
-                    for (int i = 0; i < calculateImmediateLength(words.at(2), lineNumber); i += 1)
-                        outFile << "010" << toBinary(i, 1) << toSignedImmediate(calculateImmediate(words.at(2), lineNumber), 8).substr(4-i * 4, 4) << "\n";
+                    for (int i = 0; i < calculateImmediateLength(words.at(2)); i += 1)
+                        outFile << "010" << toBinary(i, 1) << toBinary(calculateImmediate(words.at(2)), 8).substr(4-i * 4, 4) << "\n";
                 }    
                 else if (words.at(1).at(0) == 'R') {
-                    for (int i = 0; i < calculateImmediateLength(words.at(2), lineNumber); i += 1)
-                        outFile << "010" << toBinary(i, 1) << toSignedImmediate(calculateImmediate(words.at(2), lineNumber), 8).substr(4-i * 4, 4) << "\n";
+                    for (int i = 0; i < calculateImmediateLength(words.at(2)); i += 1)
+                        outFile << "010" << toBinary(i, 1) << toBinary(calculateImmediate(words.at(2)), 8).substr(4-i * 4, 4) << "\n";
                     outFile << "110001" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
                 }
             }
@@ -346,7 +371,7 @@ void instructionPass() {
             }
             else if (op == "STO") {
                 if (words.size() == 3) {
-                    writeImmediate(words.at(2), lineNumber, outFile);
+                    writeImmediate(words.at(2), outFile);
                     if (words.at(1).at(0) == 'R') {
                         outFile << "110011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
                     }
@@ -363,7 +388,7 @@ void instructionPass() {
             }
             else if (op == "LD") {
                 if (words.size() == 3) {
-                    writeImmediate(words.at(2), lineNumber, outFile);
+                    writeImmediate(words.at(2), outFile);
                     if (words.at(1).at(0) == 'R') {
                         outFile << "110010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
                     }
@@ -380,10 +405,10 @@ void instructionPass() {
             }
             else if (op == "ADR") {
                 if (words.size() == 4) {
-                    writeImmediate(words.at(3), lineNumber, outFile, words.at(1), words.at(2));
+                    writeImmediate(words.at(3), outFile, words.at(1), words.at(2));
                 }
                 else {
-                    writeImmediate(words.at(1), lineNumber, outFile);
+                    writeImmediate(words.at(1), outFile);
                 }
             }
             else if (op == "ADD") {
@@ -580,12 +605,12 @@ void instructionPass() {
             } 
         }
         else {
-            if (calculateImmediateLength(op, 0) < 3) {
-                outFile << toBinary(calculateImmediate(op, lineNumber), 8) << "\n";
+            if (calculateImmediateLength(op) < 3) {
+                outFile << toBinary(calculateImmediate(op), 8) << "\n";
             }
             else {
-                outFile << toBinary(calculateImmediate(op, lineNumber), 16).substr(0, 8) << "\n";
-                outFile << toBinary(calculateImmediate(op, lineNumber), 16).substr(8, 8) << "\n";
+                outFile << toBinary(calculateImmediate(op), 16).substr(0, 8) << "\n";
+                outFile << toBinary(calculateImmediate(op), 16).substr(8, 8) << "\n";
             }
         }
         lineNumber += calcLinesForInstruction(words, lineNumber);

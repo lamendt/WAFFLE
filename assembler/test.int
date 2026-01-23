@@ -1,4 +1,2 @@
-IMM A 0 
-MV R0 A 
-ADD R0 1 
-J loop 
+ADR R2, R3, address 
+'Test 

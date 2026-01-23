@@ -1,0 +1,4 @@
+LD R2 byte 
+'Hello World! 
+100 
+$3f3f 
