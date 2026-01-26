@@ -13,7 +13,7 @@ This has led to some unconventional design features, but it achieves these goals
 # Registers
 | Acronym | Name | Size | Description |
 |-|-|-|-|
-| **A** | Accumulator | 8-bit | The main general purpose register that is always operand 1 and destination for 8-bit arithmetic |
+| **A** | Accumulator | 8-bit | The main general-purpose register that is always operand 1 and destination for 8-bit arithmetic |
 | **Rx** | General-Purpose-Registers | 8-bit | A set of 4 general purpose registers R0-R3 that contribute to the other operand for 8-bit arithmetic |
 | **PC** | Program Counter | 16-bit | Contains the address of the current instruction being executed |
 | **AB** | Address Bus | 16-bit | Used any time an address (absolute or relative) is referenced, such as in branches and loads |
@@ -37,16 +37,16 @@ This architecture uses the standard 4 ALU flags (Z,N,C,V)
 |V|Signed overflow|
 
 # Memory
-16 byte addressable, little-endian, 8-bit word memory (64 KiB). Not all addresses are for data, however, as I/O is memory-mapped. There is no virtual memory - rather - kernel and user space are separated by the use of **PB** and **PL**. 
+16-byte addressable, little-endian, 8-bit word memory (64 KiB). Not all addresses are for data, however, as I/O is memory-mapped. There is no virtual memory - rather - kernel and user space are separated by the use of **PB** and **PL**. 
 
-When the kernel gives control to a program, it must set **PB** and **PL**. In user programs, memory loads and stores are relative to **PB**. If a relative jump or memory access would be outside of these bounds, **IR[0]** is set. However, programs can freely jump, load and store outside of these limits with absolute commands.*
+When the kernel gives control to a program, it must set **PB** and **PL**. In user programs, memory loads and stores are relative to **PB**. If a relative jump or memory access would be outside of these bounds, **IR[0]** is set. However, programs can freely jump, load, and store outside of these limits with absolute commands.*
 
 **Note: This was done to minimize syscall overhead. Obviously, there are massive security risks, but since the only developer is also the ISA designer, this is not an issue.*
 
 # Interrupts
 When an interrupt occurs, the bit(s) in **IR** corresponding to the interrupt type(s) are set, **IRA** is set to **PC**, and the CPU jumps to **IJA** and switches to kernel mode. After the interrupt is handled, the kernel gives control back to the user via IRET. 
 
-Interrupt types are encoded in **IR** as the following:
+Interrupt types are encoded in **IR** as follows:
 
 |{7:5}|{4}|{3:2}|{1}|{0}|
 |-|-|-|-|-|
@@ -485,7 +485,7 @@ Does nothing. State of all registers and memory is preserved to next cycle.
 
 Assembly: `NOP`
 ## System
-### Privleges
+### Privileges
 #### KERNEL
 *(Kernel mode)*
 
@@ -494,7 +494,7 @@ Puts the CPU into kernel mode.
 
  A brief summary of kernel mode:
 
-Interrupts are disabled, **IR** can be modified, relative loads/stores are from address 0, SYSCALL is disabled, registers **PB**, **PL**, **IRA** and **IJA** can be modified, IRET can be called, and there are no segfaults.
+Interrupts are disabled, **IR** can be modified, relative loads/stores are from address 0, SYSCALL is disabled, registers **PB**, **PL**, **IRA**, and **IJA** can be modified, IRET can be called, and there are no segfaults.
 
 Assembly: `KERNEL`
 
@@ -506,7 +506,7 @@ Puts the CPU into user mode.
 
 A brief summary of user mode:
 
-Interrupts are enabled, **IR** cannot be modified except through SYSCALL, relative loads/stores are from address **PB**, registers **PB**, **PL**, **IRA** and **IJA** cannot be changed, IRET cannot be called, and segfaults occur when relative instructions try to index out-of bounds data.
+Interrupts are enabled, **IR** cannot be modified except through SYSCALL, relative loads/stores are from address **PB**, registers **PB**, **PL**, **IRA**, and **IJA** cannot be changed, IRET cannot be called, and segfaults occur when relative instructions try to index out-of-bounds data.
 
 Assembly: `USER`
 
@@ -740,7 +740,7 @@ Can use one or two bytes in the same format as immediates.
 
 - Strings
 
-Must be prefixed by an apostrophe. Newline is represented by "\n", null is represented by "\0", and a backslash is represented by "\\" Trailing spaces will be ignored.
+Must be prefixed by an apostrophe. Newline is represented by "\n", null is represented by "\0", and a backslash is represented by "\\". Trailing spaces will be ignored.
 
 Example:
 ```
