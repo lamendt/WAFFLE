@@ -637,6 +637,11 @@ Assembly: `SYSCALL`
 |-|-|-|
 |100|Operation (000 = add, 001 = subtract, 010 = shift left arithmetic, 011 = shift right arithmetic, 100 = shift right logical, 101 = bitwise and, 110 = bitwise or, 111 = bitwise xor)|Register #
 
+`SLA (imm)`, `SRA (imm)`
+|{7:4}|{3}|{2:0}|
+|-|-|-|
+|1010| Direction (0 = left, 1 = right)|Immediate
+
 `ADD AB A`
 |{7:0}|
 |-|
