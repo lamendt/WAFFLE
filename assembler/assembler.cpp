@@ -137,11 +137,12 @@ void writeImmediate(string word, ofstream& binFile) {
 }
 
 void writeImmediate(string word, ofstream& binFile, string r1, string r2) {
-    binFile << "010" << 0 << toBinary(calculateImmediate(word), 16).substr(0, 4) << "\n";
-    binFile << "010" << 1 << toBinary(calculateImmediate(word), 16).substr(4, 4) << "\n";
+    string bin = toBinary(calculateImmediate(word), 16);
+    binFile << "010" << 0 << bin.substr(12, 4) << "\n";
+    binFile << "010" << 1 << bin.substr(8, 4) << "\n";
     binFile << "110001" << toBinary(r1.at(1), 2) << "\n";
-    binFile << "010" << 0 << toBinary(calculateImmediate(word), 16).substr(8, 4) << "\n";
-    binFile << "010" << 1 << toBinary(calculateImmediate(word), 16).substr(12, 4) << "\n";
+    binFile << "010" << 0 << bin.substr(4, 4) << "\n";
+    binFile << "010" << 1 << bin.substr(0, 4) << "\n";
     binFile << "110001" << toBinary(r2.at(1), 2) << "\n";
 }
 
@@ -643,8 +644,8 @@ void instructionPass() {
                 outFile << toBinary(calculateImmediate(op), 8) << "\n";
             }
             else {
-                outFile << toBinary(calculateImmediate(op), 16).substr(0, 8) << "\n";
                 outFile << toBinary(calculateImmediate(op), 16).substr(8, 8) << "\n";
+                outFile << toBinary(calculateImmediate(op), 16).substr(0, 8) << "\n";
             }
         }
         lineNumber += calcLinesForInstruction(words, lineNumber);
