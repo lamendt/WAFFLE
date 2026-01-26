@@ -1,0 +1,19 @@
+:setup
+ADR user
+PB
+IRA
+IMM AB 200
+PL
+ADR ija
+IJA
+IRET
+
+:ija
+IMM A 0
+MV IR A
+IRET
+
+:user
+SYSCALL
+IMM AB 0
+J user

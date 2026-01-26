@@ -1,0 +1,4 @@
+'test\\ test\\
+'test\n test\n
+'test\0 test\0
+'test test

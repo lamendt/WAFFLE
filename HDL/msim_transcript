@@ -1,0 +1,438 @@
+vsim -gui -l msim_transcript work.tb
+# vsim -gui -l msim_transcript work.tb 
+# Start time: 10:04:03 on Jan 26,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading sv_std.std
+# Loading work.tb(fast)
+vsim -gui -l msim_transcript work.tb -voptargs=+acc
+# End time: 10:04:29 on Jan 26,2026, Elapsed time: 0:00:26
+# Errors: 0, Warnings: 1
+# vsim -gui -l msim_transcript work.tb -voptargs="+acc" 
+# Start time: 10:04:29 on Jan 26,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+add wave -position insertpoint  \
+sim:/tb/dut/dout
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: levia  Hostname: DESKTOP-J1EDPJT  ProcessID: 17076
+#           Attempting to use alternate WLF file "./wlftqnjjrq".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftqnjjrq
+add wave -position insertpoint  \
+sim:/tb/dut/instruction
+add wave -position insertpoint  \
+sim:/tb/dut/clk
+add wave -position insertpoint  \
+sim:/tb/dut/R
+add wave -position insertpoint  \
+sim:/tb/dut/A
+add wave -position insertpoint  \
+sim:/tb/dut/FR
+add wave -position insertpoint  \
+sim:/tb/dut/PC
+add wave -position insertpoint  \
+sim:/tb/dut/AB
+run 2000
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+add wave -position insertpoint  \
+sim:/tb/dut/mode
+start 2000
+# The system cannot find the file 2000.
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+run 500
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run  2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+# Causality operation skipped due to absence of debug database file
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+# Compile of tb.sv was successful.
+# Compile of Top.sv failed with 1 errors.
+# 2 compiles, 1 failed with 1 error.
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+add wave -position insertpoint  \
+{sim:/tb/dut/RAM[1023]}
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restartr
+# invalid command name "restartr"
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+add wave -position insertpoint  \
+{sim:/tb/dut/RAM[800]}
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+add wave -position insertpoint  \
+sim:/tb/dut/IR
+add wave -position insertpoint  \
+sim:/tb/dut/IJA
+add wave -position insertpoint  \
+sim:/tb/dut/IRA
+add wave -position insertpoint  \
+sim:/tb/dut/PB
+add wave -position insertpoint  \
+sim:/tb/dut/PL
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 2000
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+run 500
+# Compile of tb.sv was successful.
+# Compile of Top.sv failed with 1 errors.
+# 2 compiles, 1 failed with 1 error.
+# Compile of tb.sv was successful.
+# Compile of Top.sv failed with 1 errors.
+# 2 compiles, 1 failed with 1 error.
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# 2 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Error: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv(20): Module 'timer' is not defined.
+#  For instance 'timer1' at path 'tb.dut'
+# ** Error: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv(21): Module 'timer' is not defined.
+#  For instance 'timer2' at path 'tb.dut'
+# Optimization failed
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=2, Warnings=1.
+run 2000
+# No Design Loaded!
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv failed with 2 errors.
+# 3 compiles, 1 failed with 2 errors.
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv failed with 2 errors.
+# 3 compiles, 1 failed with 2 errors.
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# No Design Loaded!
+vsim -gui -l msim_transcript -voptargs=+acc work.tb
+# vsim -gui -l msim_transcript -voptargs="+acc" work.tb 
+# Start time: 10:04:29 on Jan 26,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=2, Warnings=2.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: levia  Hostname: DESKTOP-J1EDPJT  ProcessID: 17076
+#           Attempting to use alternate WLF file "./wlftk90wac".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftk90wac
+add wave -position insertpoint  \
+sim:/tb/dut/timer1Int \
+sim:/tb/dut/i0 \
+sim:/tb/dut/timer1Ctrl \
+sim:/tb/dut/timer1Set \
+sim:/tb/dut/timer1Read
+run 2000
+add wave -position insertpoint  \
+sim:/tb/dut/timer1/clk \
+sim:/tb/dut/timer1/control \
+sim:/tb/dut/timer1/set \
+sim:/tb/dut/timer1/read \
+sim:/tb/dut/timer1/interrupt \
+sim:/tb/dut/timer1/seg \
+sim:/tb/dut/timer1/we \
+sim:/tb/dut/timer1/intEn \
+sim:/tb/dut/timer1/periodClk \
+sim:/tb/dut/timer1/periodCount \
+sim:/tb/dut/timer1/period \
+sim:/tb/dut/timer1/value \
+sim:/tb/dut/timer1/resetVal \
+sim:/tb/dut/timer1/setVal
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 200
+run 200
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+add wave -position insertpoint  \
+sim:/tb/dut/timer1Int
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+# Compile of tb.sv was successful.
+# Compile of Top.sv was successful.
+# Compile of timer.sv was successful.
+# 3 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb(fast)
+# Loading work.Top(fast)
+# Loading work.timer(fast)
+run 500
+# ** Note: (vish-4074) File C:/Users/levia/Documents/8bitCPU/HDL/vsim.wlf is still open, viewing file in live viewing mode.
+# End time: 13:31:37 on Jan 26,2026, Elapsed time: 3:27:08
+# Errors: 0, Warnings: 3

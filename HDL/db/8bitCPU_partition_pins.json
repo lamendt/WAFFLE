@@ -44,11 +44,15 @@
 					"strict" : false
 				},
 				{
-					"name" : "SW[2]",
+					"name" : "SW[0]",
 					"strict" : false
 				},
 				{
-					"name" : "SW[5]",
+					"name" : "SW[1]",
+					"strict" : false
+				},
+				{
+					"name" : "SW[2]",
 					"strict" : false
 				},
 				{
@@ -64,11 +68,7 @@
 					"strict" : false
 				},
 				{
-					"name" : "SW[0]",
-					"strict" : false
-				},
-				{
-					"name" : "SW[1]",
+					"name" : "SW[5]",
 					"strict" : false
 				}
 			]

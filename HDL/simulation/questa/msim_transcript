@@ -1,0 +1,40 @@
+# Reading pref.tcl
+# //  Questa Intel Starter FPGA Edition-64
+# //  Version 2024.3 win64 Sep 10 2024
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# do 8bitCPU_run_msim_rtl_verilog.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Questa Intel Starter FPGA Edition-64 vmap 2024.3 Lib Mapping Utility 2024.09 Sep 10 2024
+# vmap work rtl_work 
+# Copying c:/intelfpga_lite/24.1std/questa_fse/win64/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vlog -sv -work work +incdir+C:/Users/levia/Documents/8bitCPU/HDL {C:/Users/levia/Documents/8bitCPU/HDL/Top.sv}
+# Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+# Start time: 10:02:40 on Jan 26,2026
+# vlog -reportprogress 300 -sv -work work "+incdir+C:/Users/levia/Documents/8bitCPU/HDL" C:/Users/levia/Documents/8bitCPU/HDL/Top.sv 
+# -- Compiling module Top
+# 
+# Top level modules:
+# 	Top
+# End time: 10:02:40 on Jan 26,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+project open C:/Users/levia/Documents/8bitCPU/HDL/8bitCPU
+# reading c:/intelfpga_lite/24.1std/questa_fse/win64/../modelsim.ini
+# Loading project 8bitCPU

@@ -1,0 +1,38 @@
+m255
+K4
+z2
+!s11f vlog 2024.3 2024.09, Sep 10 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/levia/Documents/8bitCPU/HDL/simulation/questa
+vTop
+2C:/Users/levia/Documents/8bitCPU/HDL/Top.sv
+DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+!s110 1769450560
+!i10b 1
+!s100 :UAjggEhGe47GQ@d@m?2Z0
+IOAG;1Te0_M25nR@;Ca5K43
+S1
+R0
+w1769409078
+8C:/Users/levia/Documents/8bitCPU/HDL/Top.sv
+FC:/Users/levia/Documents/8bitCPU/HDL/Top.sv
+!i122 0
+L0 1 348
+VDg1SIo80bB@j0V0VzS_@n1
+OL;L;2024.3;79
+r1
+!s85 0
+31
+!s108 1769450560.000000
+!s107 C:/Users/levia/Documents/8bitCPU/HDL/Top.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/levia/Documents/8bitCPU/HDL|C:/Users/levia/Documents/8bitCPU/HDL/Top.sv|
+!i113 0
+o-sv -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+!s92 -sv -work work +incdir+C:/Users/levia/Documents/8bitCPU/HDL -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+tCvgOpt 0
+n@top

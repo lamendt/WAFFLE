@@ -6,7 +6,7 @@ output logic [7:0] LEDR
 logic clk, we;
 logic [1:0] state = 0;
 logic [7:0] R [3:0];
-logic [7:0] A, FR, IF, instruction, din, dout;
+logic [7:0] A, FR, instruction, din, dout;
 logic [7:0] IR = 8'b0;
 logic [15:0] PC = 0;
 logic [15:0] AB, RA, SP, IJA, IRA, PB, PL, addr;
@@ -14,12 +14,22 @@ logic branch;
 logic mode = 0;
 logic [7:0] ALUout;
 
+logic timer1Int, timer2Int, keyInt;
+logic i0 = 0;
+logic i1 = 0;
+logic i2 = 0;
+
+logic [7:0] timer1Ctrl, timer2Ctrl, timer1Set, timer2Set, timer1Read, timer2Read; 
+
+timer timer1(clk, timer1Ctrl, timer1Set, timer1Read, timer1Int);
+timer timer2(clk, timer2Ctrl, timer2Set, timer2Read, timer2Int);
+
 assign clk = MAX10_CLK1_50;
 
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("testcode/SWtoLED.bin", RAM);
+    $readmemb("../assembler/tests/timertest.bin", RAM);
 end
 
 always_comb begin
@@ -104,19 +114,35 @@ always_comb begin
 			din = R[instruction[1:0]]; end
 		8'b11110000:								//A <-> [AB]
 			addr = AB;
+		8'b11110001: begin								
+			we = 1;
+			addr = AB;
+			din = A; end
 		8'b111000??: begin						//R <-> [AB + PB]										
-			addr = AB + PB; end
+			if (mode == 1)
+				addr = AB + PB;
+			else
+				addr = AB; end
 		8'b111001??: begin																		
-			if (PB + AB <= PL && PB + AB >= PB && mode == 1)
+			if (!((PB + AB > PL || PB + AB < PB) && mode == 1))
 				we = 1;
-			addr = AB + PB;
+			if (mode == 1)
+				addr = AB + PB;
+			else
+				addr = AB;
 			din = R[instruction[1:0]]; end
-		8'b11101000:								//A <-> [AB + PB]
-			addr = AB + PB;
+		8'b11101000: begin						//A <-> [AB + PB]
+			if (mode == 1)
+				addr = AB + PB;
+			else
+				addr = AB; end
 		8'b11101001: begin							
-			if (PB + AB <= PL && PB + AB >= PB && mode == 1)
+			if (!((PB + AB > PL || PB + AB < PB) && mode == 1))
 				we = 1;
-			addr = AB + PB;
+			if (mode == 1)
+				addr = AB + PB;
+			else
+				addr = AB;
 			din = A; end
 		8'b11110001: begin						//A <-> [AB]
 			we = 1;
@@ -143,12 +169,32 @@ always_comb begin
 end
 
 always_ff @(posedge clk) begin
-	//Load instruction
-	if (state == 1)
+	//trigger interrupt flags
+	if (timer1Int && i0 == 0)
+		i0 <= 1;
+	if (timer2Int && i1 == 0)
+		i1 <= 1;
+	if (keyInt && i2 == 0)
+		i2 <= 1;
+		
+	if (state == 1) begin
+		//Load instruction
 		instruction <= dout;
+		
+		//trigger interrupts
+		if (i0) begin
+			IR[2] <= 1;
+			i0 <= 0; end
+		if (i1) begin
+			IR[3] <= 1;
+			i1 <= 0; end
+		if (i2) begin
+			IR[4] <= 1;
+			i2 <= 0; end
+	end
 
 	//Main execution
-	if (state == 2) begin
+	else if (state == 2) begin
 		if (IR != 0 && mode == 1) begin //interrupt!
 			PC <= IJA;
 			IRA <= PC;
@@ -174,10 +220,10 @@ always_ff @(posedge clk) begin
 				if(instruction[1] == 0)
 					PC <= AB;
 				else begin
-				if (PC + AB <= PL && PC + AB >= PB && mode == 1)
-					PC <= PC + AB;
+				if (((PC + AB > PL || PC + AB < PB) && mode == 1))
+					IR[1] <= 1;
 				else
-					IR[0] <= 1;
+					PC <= PC + AB;
 				end
 				if(instruction[0] == 1)
 					RA <= PC+1;
@@ -238,24 +284,24 @@ always_ff @(posedge clk) begin
 		8'b110111??:
 			AB <= {R[instruction[1:0]],AB[7:0]};
 		8'b111000??: begin						//R <-> [AB + PB]										
-			if ((PB + AB > PL || PB + AB < PB) && mode == 1)
-				IR[0] <= 1;
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
 			else
 				R[instruction[1:0]] <= dout;	
 			end
 		8'b111001??: begin																			
-			if ((PB + AB > PL || PB + AB < PB) && mode == 1)
-				IR[0] <= 1;
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
 			end
 		8'b11101000: begin								//A <-> [AB + PB]
-			if ((PB + AB > PL || PB + AB < PB) && mode == 1)
-				IR[0] <= 1;
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
 			else
 				A <= dout;	
 			end
 		8'b11101001: begin						
-			if (PB + AB > PL || PB + AB < PB)
-				IR[0] <= 1;
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
 			end
 		8'b11101010:								//Kernel
 			mode = 0;
@@ -267,9 +313,13 @@ always_ff @(posedge clk) begin
 			PC <= IRA;
 			mode <= 1; end
 		8'b11101110:								//A <-> IR
-			A <= IR;
+			if (mode == 0) 
+				A <= IR;
 		8'b11101111:
-			IR <= A;
+			if (mode == 0) 
+				IR <= A;
+			else
+				IR[0] <= 1;
 		8'b11110000:								//A <-> [AB]
 			A <= dout;
 		8'b11110001:
@@ -319,11 +369,23 @@ always_ff @(posedge clk) begin
 			RAM[addr] <= din;
 		else if (addr == 999)
 			LEDR <= din;
+		else if (addr == 990)
+			timer1Ctrl <= din;
+		else if (addr == 991)
+			timer1Set <= din;
+		else if (addr == 993)
+			timer2Ctrl <= din;
+		else if (addr == 994)
+			timer2Set <= din;
 	end
 	if (addr < 900)
 		dout <= RAM[addr];
 	else if (addr == 998)
 		dout <= SW;
+	else if (addr == 992)
+		dout <= timer1Read;
+	else if (addr == 995)
+		dout <= timer2Read;
 		
 	state <= state + 1;
 end

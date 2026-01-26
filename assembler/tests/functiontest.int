@@ -1,0 +1,5 @@
+IMM AB 0 
+CALL func 
+J main 
+IMM AB 1 
+RET 

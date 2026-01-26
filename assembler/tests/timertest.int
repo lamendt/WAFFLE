@@ -1,0 +1,18 @@
+ADR user 
+PB 
+IRA 
+IMM AB 200 
+PL 
+ADR ija 
+IJA 
+IMM AB 991 
+IMM A 50 
+STO A 
+IMM AB 990 
+IMM A %00000110 
+STO A 
+IRET 
+IMM A 0 
+MV IR A 
+IRET 
+J user 

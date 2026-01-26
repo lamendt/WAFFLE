@@ -98,7 +98,7 @@ int calculateImmediate(string word) {
             IMM = labels.at(word);
         }
         else {
-            IMM = 3000;
+            IMM = 0xffff;
         }
     }
     else if (word.at(0) == '$') {
@@ -204,8 +204,12 @@ int calcLinesForInstruction(vector<string> words, int ln) {
         }
         str = str.substr(1, str.size() - 2);
         for (int i = 0; i < str.size(); i++) {
-            if (str.at(i) != '\\' || (str.at(i) == '\\' && str.at(i+1) == '\\'))
-                lines++;    
+            if (str.at(i) != '\\')
+                lines++;
+            else if (str.substr(i,2) == "\\") {
+                i++;
+                lines++;
+            }    
         }
     }
     return lines;
@@ -549,7 +553,7 @@ void instructionPass() {
                 }
                 outFile << "011111" << (isRel ? '0' : '1') << "0" << "\n";
             }
-            else if (op == "CAll") {
+            else if (op == "CALL") {
                 bool isRel = false;
                 if (words.at(1) == "REL")
                     isRel = true;
@@ -635,8 +639,15 @@ void instructionPass() {
             for (int i = 0; i < str.size(); i++) {
                 if (str.at(i) != '\\')
                     outFile << toBinary(str.at(i), 8) << "\n";
-                else if (str.substr(i,2) == "\\")
-                    outFile << toBinary('\\', 8) << "\n";
+                else {
+                    i++;
+                    if (str.at(i) == '\\')
+                        outFile << toBinary('\\', 8) << "\n";
+                    else if (str.at(i) == 'n')
+                        outFile << toBinary('\n', 8) << "\n";
+                    else if (str.at(i) == '0')
+                        outFile << toBinary(0, 8) << "\n";
+                }
             } 
         }
         else {
