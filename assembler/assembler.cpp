@@ -372,35 +372,57 @@ void instructionPass() {
             else if (op == "STO") {
                 if (words.size() == 3) {
                     writeImmediate(words.at(2), outFile);
-                    if (words.at(1).at(0) == 'R') {
-                        outFile << "110011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                    if (words.at(2).at(0) == ':') {
+                        if (words.at(1).at(0) == 'R') {
+                            outFile << "111001" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                        }
+                        else if (words.at(1) == "A") {
+                            outFile << "11101001" << "\n";
+                        }
                     }
-                    else if (words.at(1) == "A") {
-                        outFile << "11110001" << "\n";
+                    else {
+                        if (words.at(1).at(0) == 'R') {
+                            outFile << "110011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                        }
+                        else if (words.at(1) == "A") {
+                            outFile << "11110001" << "\n";
+                        }
                     }
+
                 }
                 else if (words.at(1).at(0) == 'R') {
-                    outFile << "110011" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                    outFile << "111001" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
                 }
                 else if (words.at(1) == "A") {
-                    outFile << "11110001" << "\n";
+                    outFile << "11101001" << "\n";
                 }
             }
             else if (op == "LD") {
                 if (words.size() == 3) {
                     writeImmediate(words.at(2), outFile);
-                    if (words.at(1).at(0) == 'R') {
-                        outFile << "110010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                    if (words.at(2).at(0) == ':') {
+                        if (words.at(1).at(0) == 'R') {
+                            outFile << "111000" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                        }
+                        else if (words.at(1) == "A") {
+                            outFile << "11101000" << "\n";
+                        }
                     }
-                    else if (words.at(1) == "A") {
-                        outFile << "11110000" << "\n";
+                    else {
+                        if (words.at(1).at(0) == 'R') {
+                            outFile << "110010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                        }
+                        else if (words.at(1) == "A") {
+                            outFile << "11110000" << "\n";
+                        }
                     }
+
                 }
                 else if (words.at(1).at(0) == 'R') {
-                    outFile << "110010" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
+                    outFile << "111000" << toBinary(stoi(words.at(1).substr(1)), 2) << "\n";
                 }
                 else if (words.at(1) == "A") {
-                    outFile << "11110000" << "\n";
+                    outFile << "11101000" << "\n";
                 }
             }
             else if (op == "ADR") {
@@ -589,6 +611,18 @@ void instructionPass() {
             }
             else if (op == "SYSCALL") {
                 outFile << "11101111" << "\n";
+            }
+            else if (op == "IJA") {
+                outFile << "11111111" << "\n";
+            }
+            else if (op == "PB") {
+                outFile << "11101100" << "\n";
+            }
+            else if (op == "PL") {
+                outFile << "11111011" << "\n";
+            }
+            else if (op == "IRA") {
+                outFile << "11111101" << "\n";
             }
         }
         else if (op.at(0) == '\'') {
