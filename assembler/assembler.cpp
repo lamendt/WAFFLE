@@ -46,9 +46,9 @@ void instructionPass();
 int main() {
     cin >> fileName;
     //fileName = "test";
-    inFileName = fileName + ".asm";
-    intFileName = fileName + ".int";
-    outFileName = fileName + ".bin";
+    inFileName = "tests/" + fileName + ".asm";
+    intFileName = "tests/" + fileName + ".int";
+    outFileName = "tests/" + fileName + ".bin";
     inFile.open(inFileName);
     intFile.open(intFileName, ios::in | ios::out | ios::trunc);
     outFile.open(outFileName);
