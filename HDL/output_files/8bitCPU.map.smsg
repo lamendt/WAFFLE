@@ -1,1 +1,1 @@
-Warning (10268): Verilog HDL information at Top.sv(147): always construct contains both blocking and non-blocking assignments File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 147
+Warning (10268): Verilog HDL information at Top.sv(175): always construct contains both blocking and non-blocking assignments File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 175

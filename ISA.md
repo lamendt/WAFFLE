@@ -310,7 +310,7 @@ Assembly: `SLA Rx`
 
 Assembly: `SLA (imm)`
 
-These instructions set **C** = 1 when a 1 is shifted past bit 7.
+The immediate shift sets **C** = 1 when a 1 is shifted past bit 7.
 
 #### SRA
 *(Shift right arithmetic)*
@@ -325,7 +325,7 @@ Assembly: `SRA Rx`
 
 Assembly: `SRA (imm)`
 
-These instructions set **C** = 1 when a 1 is shifted past bit 0.
+The immediate shift sets **C** = 1 when a 1 is shifted past bit 0.
 
 #### SRL
 *(Shift right logical)*
@@ -334,8 +334,6 @@ Shifts **A** to the right by the value in **Rx** and sign-extends
 `A = A >> Rx`
 
 Assembly: `SRL Rx`
-
-These instructions set **C** = 1 when a 1 is shifted past bit 0.
 
 ### Logic
 #### AND
@@ -785,5 +783,5 @@ J loop                  // Jump back to loop
 :end
 
 :string
-'Hello World!\0
+'Hello World!\0\
 ```

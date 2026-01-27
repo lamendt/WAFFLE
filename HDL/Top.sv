@@ -12,7 +12,7 @@ logic [15:0] PC = 0;
 logic [15:0] AB, RA, SP, IJA, IRA, PB, PL, addr;
 logic branch;
 logic mode = 0;
-logic [7:0] ALUout;
+logic [7:0] ALUout, shiftedOut;
 
 logic timer1Int, timer2Int, keyInt;
 logic i0 = 0;
@@ -33,11 +33,13 @@ initial begin
 end
 
 always_comb begin
+	
 	ALUout = 0;
 	branch = 0;
 	addr = AB;
 	we = 0;
 	din = 0;
+	shiftedOut = 0;
 	if (state == 0)
 		addr = PC;
 	if (state == 2) begin
@@ -82,6 +84,10 @@ always_comb begin
 			default:
 				ALUout = 0;
 			endcase
+		8'b10100???:								//<<</>> IMM
+			shiftedOut = A >> R[instruction[1:0]];
+		8'b10101???:
+			shiftedOut = A << R[instruction[1:0]];
 		8'b101100??: 								//R <-> S
 			addr = SP;
 		8'b101101??: begin
@@ -232,22 +238,27 @@ always_ff @(posedge clk) begin
 				PC <= PC + 1; end
 		8'b100?????: begin								//ALU ops
 			A <= ALUout;
-			if(instruction[4:2] == 3'b000) begin
+			case(instruction[4:2])
+			3'b000: begin
 				FR[0] <= ALUout == 0;
 				FR[1] <= ALUout[7];
 				FR[2] <= ALUout < R[instruction[1:0]];
 				FR[3] <= (A[7] == R[instruction[1:0]][7]) && (ALUout[7] != A[7]);
 			end
-			else if(instruction[4:2] == 3'b001) begin
+			3'b001: begin
 				FR[0] <= ALUout == 0;
 				FR[1] <= ALUout[7];
 				FR[2] <= A >= R[instruction[1:0]];
 				FR[3] <= (A[7] != R[instruction[1:0]][7]) && (ALUout[7] != A[7]);
-			end end
-		8'b10100???:								//<<</>> IMM
+			end
+			endcase
+		end
+		8'b10100???: begin								//<<</>> IMM
 			A <= A <<< instruction[2:0];
-		8'b10101???:
+			FR[2] <= |shiftedOut; end
+		8'b10101???: begin
 			A <= A >>> instruction[2:0];
+			FR[2] <= |shiftedOut; end
 		8'b101100??: begin 						//R <-> S
 			R[instruction[1:0]] <= dout;
 			SP <= SP + 1; end
