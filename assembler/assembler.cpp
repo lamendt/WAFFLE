@@ -43,12 +43,16 @@ void labelPass();
 void optimizationPass();
 void instructionPass();
 
-int main() {
-    cin >> fileName;
-    //fileName = "test";
-    inFileName = "tests/" + fileName + ".asm";
-    intFileName = "tests/" + fileName + ".int";
-    outFileName = "tests/" + fileName + ".bin";
+int main(int argc, char* argv[]) {
+    if (argc == 0) {
+        cin >> fileName;
+    }
+    else {
+        fileName = string(argv[1]).substr(0, string(argv[1]).find_last_of('.'));
+    }
+    inFileName = fileName + ".asm";
+    intFileName = fileName + ".int";
+    outFileName = fileName + ".bin";
     inFile.open(inFileName);
     intFile.open(intFileName, ios::in | ios::out | ios::trunc);
     outFile.open(outFileName);
@@ -138,12 +142,17 @@ void writeImmediate(string word, ofstream& binFile) {
 
 void writeImmediate(string word, ofstream& binFile, string r1, string r2) {
     string bin = toBinary(calculateImmediate(word), 16);
+    int len = calculateImmediateLength(word);
     binFile << "010" << 0 << bin.substr(12, 4) << "\n";
-    binFile << "010" << 1 << bin.substr(8, 4) << "\n";
+    if (len > 1)
+        binFile << "010" << 1 << bin.substr(8, 4) << "\n";
     binFile << "110001" << toBinary(r1.at(1), 2) << "\n";
-    binFile << "010" << 0 << bin.substr(4, 4) << "\n";
-    binFile << "010" << 1 << bin.substr(0, 4) << "\n";
-    binFile << "110001" << toBinary(r2.at(1), 2) << "\n";
+    if (len > 2) {
+        binFile << "010" << 0 << bin.substr(4, 4) << "\n";
+        if (len > 3)
+            binFile << "010" << 1 << bin.substr(0, 4) << "\n";
+        binFile << "110001" << toBinary(r2.at(1), 2) << "\n";
+    }
 }
 
 int calcLinesForInstruction(vector<string> words, int ln) {
@@ -182,7 +191,25 @@ int calcLinesForInstruction(vector<string> words, int ln) {
         }
         else if (op == "ADR") {
             if (words.size() == 4) {
-                lines = 6;
+                int len = calculateImmediateLength(words.at(3));
+                switch (len)
+                {
+                case 2:
+                    lines = 3;
+                    break;
+                
+                case 3:
+                    lines = 5;
+                    break;
+
+                case 4:
+                    lines = 6;
+                    break;
+                
+                default:
+                    lines = 2;
+                    break;
+                }
             }
             else {
                 lines = calculateImmediateLength(words.at(1));

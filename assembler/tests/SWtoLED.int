@@ -1,0 +1,4 @@
+LD R0 998 
+ADD AB 1 
+STO R0 
+J start 

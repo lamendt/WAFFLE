@@ -1,0 +1,5 @@
+{
+    "key": "ctrl+shift+a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Assemble active file"
+}
