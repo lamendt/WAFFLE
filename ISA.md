@@ -116,6 +116,10 @@ Assembly: `IMM A (imm)`
 - **AB** `AB = (imm)`
 
 Assembly: `IMM AB (imm)`
+
+- **R** `R = (imm)`
+
+Assembly: `IMM R (imm)` (Clobbers **A**)
 ### Memory
 For loads/stores, the addressing modes are as follows:
 
@@ -123,7 +127,7 @@ For loads/stores, the addressing modes are as follows:
 Uses the address of the symbol
 `Address = Adr(symbol)`
 
-Assembly: `OP dest symbol`
+Assembly: `OP dest symbol` (Clobbers **AB**)
 
 #### Relative:
 Uses **AB** + **PB** as the address
@@ -136,7 +140,7 @@ Assembly: `OP dest`
 Uses an immediate as the address
 `Address = *(imm)*` 
 
-Assembly: `OP dest (imm)`
+Assembly: `OP dest (imm)` (Clobbers **AB**)
 
 #### LD
 *(Load)*
@@ -163,7 +167,8 @@ Assembly: `ADR symbol`
 
 - **R1,R2** `{R2,R1} = address(symbol)`
 
-Assembly: `ADR R1 R2 symbol`
+Assembly: `ADR R1 R2 symbol` (Clobbers **A**)
+
 #### PUSH
 *(Push to stack)*
 
@@ -310,7 +315,7 @@ Assembly: `SLA Rx`
 
 Assembly: `SLA (imm)`
 
-The immediate shift sets **C** = 1 when a 1 is shifted past bit 7.
+These shifts set **C** = 1 when a 1 is shifted past bit 7. **Note, this only works reliably when the shift is <= 8.*
 
 #### SRA
 *(Shift right arithmetic)*
@@ -325,7 +330,7 @@ Assembly: `SRA Rx`
 
 Assembly: `SRA (imm)`
 
-The immediate shift sets **C** = 1 when a 1 is shifted past bit 0.
+These shifts set **C** = 1 when a 1 is shifted past bit 0. **Note, this only works reliably when the shift is <= 8.*
 
 #### SRL
 *(Shift right logical)*
@@ -334,6 +339,8 @@ Shifts **A** to the right by the value in **Rx** and sign-extends
 `A = A >> Rx`
 
 Assembly: `SRL Rx`
+
+These shifts set **C** = 1 when a 1 is shifted past bit 0. **Note, this only works reliably when the shift is <= 8.*
 
 ### Logic
 #### AND
@@ -344,6 +351,8 @@ Performs a bitwise and on **A** with the value in **Rx**
 
 Assembly: `AND Rx`
 
+This operation sets **Z** = 1 when the result is 0.
+
 #### OR
 *(Bitwise or)*
 
@@ -352,6 +361,8 @@ Performs a bitwise or on **A** with the value in **Rx**
 
 Assembly: `OR Rx`
 
+This operation sets **Z** = 1 when the result is 0.
+
 #### XOR
 *(Bitwise xor)*
 
@@ -359,6 +370,8 @@ Performs a bitwise xor on **A** with the value in **Rx**
 `A ^= Rx`
 
 Assembly: `XOR Rx`
+
+This operation sets **Z** = 1 when the result is 0.
 
 ## Control Flow
 ### Branches
@@ -369,7 +382,7 @@ For conditional branches, the flags are read from **FR**. For all branches, the 
 Jumps to the address of the symbol
 `PC = Adr(symbol)`
 
-Assembly: `OP symbol`
+Assembly: `OP symbol` (Clobbers **AB**)
 
 #### Relative:
 
@@ -390,7 +403,7 @@ Assembly: `OP ABS`
 Jumps to (imm)
 `PC = *(imm)*` 
 
-Assembly: `OP (imm)`
+Assembly: `OP (imm)` (Clobbers **AB**)
 #### BEQ
 *(Branch on equal)*
 

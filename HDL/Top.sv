@@ -29,7 +29,7 @@ assign clk = MAX10_CLK1_50;
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("../assembler/tests/timertest.bin", RAM);
+    $readmemb("testcode/flagstest.bin", RAM);
 end
 
 always_comb begin
@@ -69,12 +69,15 @@ always_comb begin
 				ALUout = A + R[instruction[1:0]];
 			3'b001:
 				ALUout = A - R[instruction[1:0]];
-			3'b010:
+			3'b010: begin
 				ALUout = A <<< R[instruction[1:0]];
-			3'b011:
+				shiftedOut = A >>> 8 - R[instruction[1:0]]; end
+			3'b011: begin
 				ALUout = A >>> R[instruction[1:0]];
-			3'b100:
+				shiftedOut = A <<< 8 - R[instruction[1:0]]; end
+			3'b100: begin
 				ALUout = A >> R[instruction[1:0]];
+				shiftedOut = A <<< 8 - R[instruction[1:0]]; end
 			3'b101:
 				ALUout = A & R[instruction[1:0]];
 			3'b110:
@@ -85,9 +88,9 @@ always_comb begin
 				ALUout = 0;
 			endcase
 		8'b10100???:								//<<</>> IMM
-			shiftedOut = A >> R[instruction[1:0]];
+			shiftedOut = A >>> 8 - instruction[2:0];
 		8'b10101???:
-			shiftedOut = A << R[instruction[1:0]];
+			shiftedOut = A <<< 8 - instruction[2:0];
 		8'b101100??: 								//R <-> S
 			addr = SP;
 		8'b101101??: begin
@@ -238,7 +241,7 @@ always_ff @(posedge clk) begin
 				PC <= PC + 1; end
 		8'b100?????: begin								//ALU ops
 			A <= ALUout;
-			case(instruction[4:2])
+			casez(instruction[4:2])
 			3'b000: begin
 				FR[0] <= ALUout == 0;
 				FR[1] <= ALUout[7];
@@ -251,6 +254,18 @@ always_ff @(posedge clk) begin
 				FR[2] <= A >= R[instruction[1:0]];
 				FR[3] <= (A[7] != R[instruction[1:0]][7]) && (ALUout[7] != A[7]);
 			end
+			3'b010:
+				FR[2] <= |shiftedOut;
+			3'b011:
+				FR[2] <= |shiftedOut;
+			3'b100:
+				FR[2] <= |shiftedOut;
+			3'b101:
+				FR[0] <= ALUout == 0;
+			3'b110:
+				FR[0] <= ALUout == 0;
+			3'b111:
+				FR[0] <= ALUout == 0;
 			endcase
 		end
 		8'b10100???: begin								//<<</>> IMM

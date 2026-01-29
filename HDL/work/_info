@@ -47,6 +47,10 @@ R0
 R1
 R0
 R1
+R0
+R1
+R0
+R1
 Z2 !s12c _opt1
 R1
 R0
@@ -130,10 +134,10 @@ n@_opt1
 R12
 R4
 T_opt2
-!s110 1769462888
-VL2GPX^]0GaNQk]a2ohmdm3
+!s110 1769651764
+VDWfG9@z=9f^]Q^:]MHE][0
 R5
-=31-9c5a4409d0bf-6977dc67-2f9-7e6c
+=2-9c5a4409d0bf-697abe33-3b3-596c
 R1
 R6
 R7
@@ -146,7 +150,7 @@ R12
 vtb
 2C:/Users/levia/Documents/8bitCPU/HDL/tb.sv
 Z13 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z14 !s110 1769462883
+Z14 !s110 1769651758
 !i10b 1
 !s100 ZSgLA@z:f4CIkjca0MzYi1
 ICk^j=MdNkeQcU`eGH7C^>2
@@ -155,14 +159,14 @@ Z15 dC:/Users/levia/Documents/8bitCPU/HDL
 w1763927203
 8C:/Users/levia/Documents/8bitCPU/HDL/tb.sv
 FC:/Users/levia/Documents/8bitCPU/HDL/tb.sv
-!i122 109
+!i122 117
 L0 1 8
 Z16 VDg1SIo80bB@j0V0VzS_@n1
 Z17 OL;L;2024.3;79
 r1
 !s85 0
 31
-Z18 !s108 1769462883.000000
+Z18 !s108 1769651758.000000
 !s107 C:/Users/levia/Documents/8bitCPU/HDL/tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/HDL/tb.sv|
 !i113 0
@@ -171,7 +175,7 @@ R11
 vtimer
 2C:/Users/levia/Documents/8bitCPU/HDL/timer.sv
 R13
-!s110 1769462884
+!s110 1769651759
 !i10b 1
 !s100 9Fj=fRLCk4fUaD5z9kHlQ1
 IN1W^7R2E??N=F?E:7RPOK2
@@ -180,14 +184,14 @@ R15
 w1769462636
 8C:/Users/levia/Documents/8bitCPU/HDL/timer.sv
 FC:/Users/levia/Documents/8bitCPU/HDL/timer.sv
-!i122 111
+!i122 119
 L0 1 59
 R16
 R17
 r1
 !s85 0
 31
-!s108 1769462884.000000
+!s108 1769651759.000000
 !s107 C:/Users/levia/Documents/8bitCPU/HDL/timer.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/HDL/timer.sv|
 !i113 0
@@ -198,15 +202,15 @@ vTop
 R13
 R14
 !i10b 1
-!s100 =nQljP;DNb`z1Q;NO60bb3
-I=CD9;cQ5;<URgmT]lnecB0
+!s100 80e_eU^9cBj1W2:mfdO;E3
+I8mL^zXBBUFJjz236;kWLb2
 S1
 R15
-w1769462880
+w1769651750
 8C:/Users/levia/Documents/8bitCPU/HDL/Top.sv
 FC:/Users/levia/Documents/8bitCPU/HDL/Top.sv
-!i122 110
-L0 1 397
+!i122 118
+L0 1 423
 R16
 R17
 r1
