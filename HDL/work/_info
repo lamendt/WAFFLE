@@ -1,59 +1,11 @@
 m255
 K4
 z2
-Z0 !s12c _opt2
+Z0 !s12c _opt3
 Z1 !s99 nomlopt
 R0
 R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-R0
-R1
-Z2 !s12c _opt1
-R1
-R0
+Z2 !s12c _opt2
 R1
 R2
 R1
@@ -61,7 +13,57 @@ R2
 R1
 R2
 R1
-Z3 !s12c _opt
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+R2
+R1
+Z3 !s12c _opt1
+R1
+R2
 R1
 R3
 R1
@@ -69,31 +71,39 @@ R3
 R1
 R3
 R1
-R3
+Z4 !s12c _opt
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
 R1
-R3
+R4
+R1
+R4
+R1
+R4
+R1
+R4
+R1
+R4
 R1
 !s11f vlog 2024.3 2024.09, Sep 10 2024
 13
@@ -102,124 +112,139 @@ R1
 !i10e 25
 !i10f 100
 cModel Technology
-Z4 dC:/Users/levia/Documents/CPEN211/Lab2FA
+Z5 dC:/Users/levia/Documents/CPEN211/Lab2FA
 T_opt
 !s110 1763881675
 VX05]zaFn^n0jPLdD?oIXg0
-Z5 04 2 4 work tb fast 0
+Z6 04 2 4 work tb fast 0
 =8-9c5a4409d0bf-6922b2ca-2e7-42b4
 R1
-Z6 !s12f OEM100
-Z7 !s12b OEM100
-Z8 !s124 OEM10U2 
-Z9 !s135 nogc
-Z10 o-quiet -auto_acc_if_foreign -work work +acc
-Z11 tCvgOpt 0
+Z7 !s12f OEM100
+Z8 !s12b OEM100
+Z9 !s124 OEM10U2 
+Z10 !s135 nogc
+Z11 o-quiet -auto_acc_if_foreign -work work +acc
+Z12 tCvgOpt 0
 n@_opt
-Z12 OL;O;2024.3;79
-R4
+Z13 OL;O;2024.3;79
+R5
 T_opt1
 !s110 1763940865
 VVR^21dB]21;RO[o3M7Gmk3
-R5
+R6
 =1-9c5a4409d0bf-69239a01-32-3a1c
 R1
-R6
 R7
 R8
 R9
 R10
 R11
-n@_opt1
 R12
-R4
-T_opt2
-!s110 1769651764
-VDWfG9@z=9f^]Q^:]MHE][0
+n@_opt1
+R13
 R5
-=2-9c5a4409d0bf-697abe33-3b3-596c
-R1
+T_opt2
+!s110 1769656262
+VCMmb^1d=N5b1>:8OI_b1e0
 R6
+=10-9c5a4409d0bf-697acfc5-104-596c
+R1
 R7
-!s124 OEM10U4 
-R9
+R8
+Z14 !s124 OEM10U4 
 R10
 R11
-n@_opt2
 R12
+n@_opt2
+R13
+R5
+T_opt3
+!s110 1769799981
+V:UHXWXf;C^P;4m?1:nKEm1
+R6
+=3-9c5a4409d0bf-697d012c-381-2dd4
+R1
+R7
+R8
+R14
+R10
+R11
+R12
+n@_opt3
+R13
 vtb
 2C:/Users/levia/Documents/8bitCPU/HDL/tb.sv
-Z13 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z14 !s110 1769651758
+Z15 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z16 !s110 1769799976
 !i10b 1
 !s100 ZSgLA@z:f4CIkjca0MzYi1
 ICk^j=MdNkeQcU`eGH7C^>2
 S1
-Z15 dC:/Users/levia/Documents/8bitCPU/HDL
+Z17 dC:/Users/levia/Documents/8bitCPU/HDL
 w1763927203
 8C:/Users/levia/Documents/8bitCPU/HDL/tb.sv
 FC:/Users/levia/Documents/8bitCPU/HDL/tb.sv
-!i122 117
+!i122 132
 L0 1 8
-Z16 VDg1SIo80bB@j0V0VzS_@n1
-Z17 OL;L;2024.3;79
+Z18 VDg1SIo80bB@j0V0VzS_@n1
+Z19 OL;L;2024.3;79
 r1
 !s85 0
 31
-Z18 !s108 1769651758.000000
+Z20 !s108 1769799976.000000
 !s107 C:/Users/levia/Documents/8bitCPU/HDL/tb.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/HDL/tb.sv|
 !i113 0
-Z19 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
-R11
+Z21 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R12
 vtimer
 2C:/Users/levia/Documents/8bitCPU/HDL/timer.sv
-R13
-!s110 1769651759
+R15
+R16
 !i10b 1
 !s100 9Fj=fRLCk4fUaD5z9kHlQ1
 IN1W^7R2E??N=F?E:7RPOK2
 S1
-R15
+R17
 w1769462636
 8C:/Users/levia/Documents/8bitCPU/HDL/timer.sv
 FC:/Users/levia/Documents/8bitCPU/HDL/timer.sv
-!i122 119
+!i122 134
 L0 1 59
-R16
-R17
+R18
+R19
 r1
 !s85 0
 31
-!s108 1769651759.000000
+R20
 !s107 C:/Users/levia/Documents/8bitCPU/HDL/timer.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/HDL/timer.sv|
 !i113 0
-R19
-R11
+R21
+R12
 vTop
 2C:/Users/levia/Documents/8bitCPU/HDL/Top.sv
-R13
-R14
-!i10b 1
-!s100 80e_eU^9cBj1W2:mfdO;E3
-I8mL^zXBBUFJjz236;kWLb2
-S1
 R15
-w1769651750
+R16
+!i10b 1
+!s100 z>e4?`a0oZ`PHXLS6O<ZG1
+Igj>P[`8UDO[5:IEAL:22K1
+S1
+R17
+w1769799972
 8C:/Users/levia/Documents/8bitCPU/HDL/Top.sv
 FC:/Users/levia/Documents/8bitCPU/HDL/Top.sv
-!i122 118
-L0 1 423
-R16
-R17
+!i122 133
+L0 1 429
+R18
+R19
 r1
 !s85 0
 31
-R18
+R20
 !s107 C:/Users/levia/Documents/8bitCPU/HDL/Top.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/levia/Documents/8bitCPU/HDL/Top.sv|
 !i113 0
-R19
-R11
+R21
+R12
 n@top

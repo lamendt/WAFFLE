@@ -1,15 +1,7 @@
-//mult(byte a, byte b)
-//    j = 0
-//    c = 0
-//    for i++ from 0 to 7
-//        if a[0]
-//            push b <<< i
-//            j ++
-//        a >>> 1
-//    for i++ from 0 to j
-//        pop b
-//        c += b
-//    return c
+IMM AB 100
+MV SP AB
+IMM R0 5
+IMM R1 6
 
 :smallMult
 //R0 = a, R1 = b

@@ -29,7 +29,7 @@ assign clk = MAX10_CLK1_50;
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("testcode/flagstest.bin", RAM);
+    $readmemb("../assembler/tests/timertest.bin", RAM);
 end
 
 always_comb begin
@@ -274,33 +274,11 @@ always_ff @(posedge clk) begin
 		8'b10101???: begin
 			A <= A >>> instruction[2:0];
 			FR[2] <= |shiftedOut; end
-		8'b101100??: begin 						//R <-> S
-			R[instruction[1:0]] <= dout;
-			SP <= SP + 1; end
-		8'b101101??:
-			SP <= SP - 1;
-		8'b10111000: begin						//RA/AB <-> S
-			RA <= {{8{dout}},dout};
-			SP <= SP + 1; end
-		8'b10111001: begin
-			RA <= {dout,RA[7:0]};
-			SP <= SP + 1; end
-		8'b10111010: begin						
-			AB <= {{8{dout}},dout};
-			SP <= SP + 1; end
-		8'b10111011: begin
-			AB <= {dout,AB[7:0]};
-			SP <= SP + 1; end
-		8'b101111??:						
-			SP <= SP - 1;
 		8'b110000??:								//A <-> R
 			A <= R[instruction[1:0]];
 		8'b110001??:
 			R[instruction[1:0]] <= A;
-		8'b110010??:								//R <-> [AB]
-			R[instruction[1:0]] <= dout;
-		8'b110011??:
-			A <= A;								
+										
 		8'b110100??:								//R -/+ 1
 			R[instruction[1:0]] <= R[instruction[1:0]] - 1;
 		8'b110101??:								
@@ -309,26 +287,6 @@ always_ff @(posedge clk) begin
 			AB <= {{8{R[instruction[1:0]][7]}},R[instruction[1:0]]};
 		8'b110111??:
 			AB <= {R[instruction[1:0]],AB[7:0]};
-		8'b111000??: begin						//R <-> [AB + PB]										
-			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
-				IR[1] <= 1;
-			else
-				R[instruction[1:0]] <= dout;	
-			end
-		8'b111001??: begin																			
-			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
-				IR[1] <= 1;
-			end
-		8'b11101000: begin								//A <-> [AB + PB]
-			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
-				IR[1] <= 1;
-			else
-				A <= dout;	
-			end
-		8'b11101001: begin						
-			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
-				IR[1] <= 1;
-			end
 		8'b11101010:								//Kernel
 			mode = 0;
 		8'b11101011:								//User
@@ -346,20 +304,6 @@ always_ff @(posedge clk) begin
 				IR <= A;
 			else
 				IR[0] <= 1;
-		8'b11110000:								//A <-> [AB]
-			A <= dout;
-		8'b11110001:
-			A <= A;
-		8'b11110010: begin						//A <-> S
-			A <= dout;
-			SP <= SP + 1; end
-		8'b11110011:
-			SP <= SP - 1;
-		8'b11110100: begin						//FR <-> S
-			FR <= dout;
-			SP <= SP + 1; end
-		8'b11110101:
-			SP <= SP - 1;
 		8'b11110110:								//AB -/+ 1
 			AB <= AB - 1;
 		8'b11110111:								
@@ -387,6 +331,68 @@ always_ff @(posedge clk) begin
 		if (instruction[7:5] != 3'b011 && instruction != 8'b11111010 && instruction != 8'b11101101)
 			PC <= PC + 1;
 		end
+	end
+
+	else if (state == 3) begin
+		casez(instruction)
+		8'b101100??: begin 						//R <-> S
+			R[instruction[1:0]] <= dout;
+			SP <= SP + 1; end
+		8'b101101??:
+			SP <= SP - 1;
+		8'b10111000: begin						//RA/AB <-> S
+			RA <= {{8{dout}},dout};
+			SP <= SP + 1; end
+		8'b10111001: begin
+			RA <= {dout,RA[7:0]};
+			SP <= SP + 1; end
+		8'b10111010: begin						
+			AB <= {{8{dout}},dout};
+			SP <= SP + 1; end
+		8'b10111011: begin
+			AB <= {dout,AB[7:0]};
+			SP <= SP + 1; end
+		8'b101111??:						
+			SP <= SP - 1;
+		8'b110010??:								//R <-> [AB]
+			R[instruction[1:0]] <= dout;
+		8'b110011??:
+			A <= A;
+		8'b111000??: begin						//R <-> [AB + PB]										
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
+			else
+				R[instruction[1:0]] <= dout;	
+			end
+		8'b111001??: begin																			
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
+			end
+		8'b11101000: begin								//A <-> [AB + PB]
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
+			else
+				A <= dout;	
+			end
+		8'b11101001: begin						
+			if (((PB + AB > PL || PB + AB < PB) && mode == 1))
+				IR[1] <= 1;
+			end
+		8'b11110000:								//A <-> [AB]
+			A <= dout;
+		8'b11110001:
+			A <= A;
+		8'b11110010: begin						//A <-> S
+			A <= dout;
+			SP <= SP + 1; end
+		8'b11110011:
+			SP <= SP - 1;
+		8'b11110100: begin						//FR <-> S
+			FR <= dout;
+			SP <= SP + 1; end
+		8'b11110101:
+			SP <= SP - 1;
+		endcase
 	end
 	
 	//Memory
