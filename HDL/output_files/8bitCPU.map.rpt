@@ -1,5 +1,5 @@
 Analysis & Synthesis report for 8bitCPU
-Tue Jan 27 14:32:13 2026
+Sun Feb  1 21:18:17 2026
 Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 
 
@@ -10,8 +10,17 @@ Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
   2. Analysis & Synthesis Summary
   3. Analysis & Synthesis Settings
   4. Parallel Compilation
-  5. Analysis & Synthesis Messages
-  6. Analysis & Synthesis Suppressed Messages
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Registers Removed During Synthesis
+  9. General Register Statistics
+ 10. Inverted Register Statistics
+ 11. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 12. Post-Synthesis Netlist Statistics for Top Partition
+ 13. Elapsed Time Per Partition
+ 14. Analysis & Synthesis Messages
+ 15. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -38,22 +47,22 @@ on the Quartus Prime software download page.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Failed - Tue Jan 27 14:32:13 2026               ;
+; Analysis & Synthesis Status        ; Successful - Sun Feb  1 21:18:17 2026           ;
 ; Quartus Prime Version              ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
 ; Revision Name                      ; 8bitCPU                                         ;
 ; Top-level Entity Name              ; Top                                             ;
 ; Family                             ; MAX 10                                          ;
-; Total logic elements               ; N/A until Partition Merge                       ;
-;     Total combinational functions  ; N/A until Partition Merge                       ;
-;     Dedicated logic registers      ; N/A until Partition Merge                       ;
-; Total registers                    ; N/A until Partition Merge                       ;
-; Total pins                         ; N/A until Partition Merge                       ;
-; Total virtual pins                 ; N/A until Partition Merge                       ;
-; Total memory bits                  ; N/A until Partition Merge                       ;
-; Embedded Multiplier 9-bit elements ; N/A until Partition Merge                       ;
-; Total PLLs                         ; N/A until Partition Merge                       ;
-; UFM blocks                         ; N/A until Partition Merge                       ;
-; ADC blocks                         ; N/A until Partition Merge                       ;
+; Total logic elements               ; 16,247                                          ;
+;     Total combinational functions  ; 8,145                                           ;
+;     Dedicated logic registers      ; 8,539                                           ;
+; Total registers                    ; 8539                                            ;
+; Total pins                         ; 17                                              ;
+; Total virtual pins                 ; 0                                               ;
+; Total memory bits                  ; 0                                               ;
+; Embedded Multiplier 9-bit elements ; 0                                               ;
+; Total PLLs                         ; 0                                               ;
+; UFM blocks                         ; 0                                               ;
+; ADC blocks                         ; 0                                               ;
 +------------------------------------+-------------------------------------------------+
 
 
@@ -151,12 +160,236 @@ on the Quartus Prime software download page.
 ; Number detected on machine ; 8           ;
 ; Maximum allowed            ; 4           ;
 ;                            ;             ;
-; Average used               ; 1.00        ;
-; Maximum used               ; 1           ;
+; Average used               ; 1.01        ;
+; Maximum used               ; 4           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.2%      ;
+;     Processor 3            ;   0.2%      ;
+;     Processor 4            ;   0.2%      ;
 +----------------------------+-------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                     ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                 ; Library ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------+---------+
+; Top.sv                           ; yes             ; User SystemVerilog HDL File  ; C:/Users/levia/Documents/8bitCPU/HDL/Top.sv                  ;         ;
+; timer.sv                         ; yes             ; User SystemVerilog HDL File  ; C:/Users/levia/Documents/8bitCPU/HDL/timer.sv                ;         ;
+; testcode/memcpytest.bin          ; yes             ; Auto-Found Unspecified File  ; C:/Users/levia/Documents/8bitCPU/HDL/testcode/memcpytest.bin ;         ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------+---------+
+
+
++-------------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                       ;
++---------------------------------------------+---------------------+
+; Resource                                    ; Usage               ;
++---------------------------------------------+---------------------+
+; Estimated Total logic elements              ; 16,247              ;
+;                                             ;                     ;
+; Total combinational functions               ; 8145                ;
+; Logic element usage by number of LUT inputs ;                     ;
+;     -- 4 input functions                    ; 6275                ;
+;     -- 3 input functions                    ; 1397                ;
+;     -- <=2 input functions                  ; 473                 ;
+;                                             ;                     ;
+; Logic elements by mode                      ;                     ;
+;     -- normal mode                          ; 7875                ;
+;     -- arithmetic mode                      ; 270                 ;
+;                                             ;                     ;
+; Total registers                             ; 8539                ;
+;     -- Dedicated logic registers            ; 8539                ;
+;     -- I/O registers                        ; 0                   ;
+;                                             ;                     ;
+; I/O pins                                    ; 17                  ;
+;                                             ;                     ;
+; Embedded Multiplier 9-bit elements          ; 0                   ;
+;                                             ;                     ;
+; Maximum fan-out node                        ; MAX10_CLK1_50~input ;
+; Maximum fan-out                             ; 8539                ;
+; Total fan-out                               ; 55764               ;
+; Average fan-out                             ; 3.34                ;
++---------------------------------------------+---------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
+; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name ; Entity Name ; Library Name ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
+; |Top                       ; 8145 (7999)         ; 8539 (8437)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 17   ; 0            ; 0          ; |Top                ; Top         ; work         ;
+;    |timer:timer1|          ; 73 (73)             ; 51 (51)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |Top|timer:timer1   ; timer       ; work         ;
+;    |timer:timer2|          ; 73 (73)             ; 51 (51)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |Top|timer:timer2   ; timer       ; work         ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++--------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                             ;
++---------------------------------------+----------------------------------------+
+; Register name                         ; Reason for Removal                     ;
++---------------------------------------+----------------------------------------+
+; i2                                    ; Stuck at GND due to stuck port data_in ;
+; Total Number of Removed Registers = 1 ;                                        ;
++---------------------------------------+----------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 8539  ;
+; Number of registers using Synchronous Clear  ; 2     ;
+; Number of registers using Synchronous Load   ; 90    ;
+; Number of registers using Asynchronous Clear ; 0     ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 8525  ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++---------------------------------------------------+
+; Inverted Register Statistics                      ;
++-----------------------------------------+---------+
+; Inverted Register                       ; Fan out ;
++-----------------------------------------+---------+
+; timer:timer2|value[13]                  ; 4       ;
+; timer:timer1|value[5]                   ; 4       ;
+; timer:timer2|value[5]                   ; 4       ;
+; timer:timer1|value[13]                  ; 4       ;
+; timer:timer2|value[10]                  ; 4       ;
+; timer:timer1|value[2]                   ; 4       ;
+; timer:timer2|value[2]                   ; 4       ;
+; timer:timer1|value[10]                  ; 4       ;
+; timer:timer1|value[4]                   ; 4       ;
+; timer:timer2|value[12]                  ; 4       ;
+; timer:timer2|value[4]                   ; 4       ;
+; timer:timer1|value[12]                  ; 4       ;
+; timer:timer2|value[14]                  ; 4       ;
+; timer:timer1|value[6]                   ; 4       ;
+; timer:timer2|value[6]                   ; 4       ;
+; timer:timer1|value[14]                  ; 4       ;
+; timer:timer2|value[8]                   ; 4       ;
+; timer:timer1|value[0]                   ; 4       ;
+; timer:timer2|value[0]                   ; 4       ;
+; timer:timer1|value[8]                   ; 4       ;
+; timer:timer1|value[3]                   ; 4       ;
+; timer:timer2|value[11]                  ; 4       ;
+; timer:timer2|value[3]                   ; 4       ;
+; timer:timer1|value[11]                  ; 4       ;
+; timer:timer2|value[15]                  ; 4       ;
+; timer:timer1|value[7]                   ; 4       ;
+; timer:timer2|value[7]                   ; 4       ;
+; timer:timer1|value[15]                  ; 4       ;
+; timer:timer1|value[1]                   ; 4       ;
+; timer:timer2|value[9]                   ; 4       ;
+; timer:timer2|value[1]                   ; 4       ;
+; timer:timer1|value[9]                   ; 4       ;
+; timer:timer2|resetVal[15]               ; 2       ;
+; timer:timer2|resetVal[14]               ; 2       ;
+; timer:timer2|resetVal[13]               ; 2       ;
+; timer:timer2|resetVal[12]               ; 2       ;
+; timer:timer2|resetVal[11]               ; 2       ;
+; timer:timer2|resetVal[10]               ; 2       ;
+; timer:timer2|resetVal[9]                ; 2       ;
+; timer:timer2|resetVal[8]                ; 2       ;
+; timer:timer2|resetVal[7]                ; 2       ;
+; timer:timer2|resetVal[6]                ; 2       ;
+; timer:timer2|resetVal[5]                ; 2       ;
+; timer:timer2|resetVal[4]                ; 2       ;
+; timer:timer2|resetVal[3]                ; 2       ;
+; timer:timer2|resetVal[2]                ; 2       ;
+; timer:timer2|resetVal[1]                ; 2       ;
+; timer:timer2|resetVal[0]                ; 2       ;
+; timer:timer1|resetVal[15]               ; 2       ;
+; timer:timer1|resetVal[14]               ; 2       ;
+; timer:timer1|resetVal[13]               ; 2       ;
+; timer:timer1|resetVal[12]               ; 2       ;
+; timer:timer1|resetVal[11]               ; 2       ;
+; timer:timer1|resetVal[10]               ; 2       ;
+; timer:timer1|resetVal[9]                ; 2       ;
+; timer:timer1|resetVal[8]                ; 2       ;
+; timer:timer1|resetVal[7]                ; 2       ;
+; timer:timer1|resetVal[6]                ; 2       ;
+; timer:timer1|resetVal[5]                ; 2       ;
+; timer:timer1|resetVal[4]                ; 2       ;
+; timer:timer1|resetVal[3]                ; 2       ;
+; timer:timer1|resetVal[2]                ; 2       ;
+; timer:timer1|resetVal[1]                ; 2       ;
+; timer:timer1|resetVal[0]                ; 2       ;
+; Total number of inverted registers = 64 ;         ;
++-----------------------------------------+---------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                           ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |Top|RA[1]                 ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |Top|RA[15]                ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |Top|IRA[11]               ;
+; 7:1                ; 8 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; Yes        ; |Top|dout[5]               ;
+; 114:1              ; 16 bits   ; 1216 LEs      ; 32 LEs               ; 1184 LEs               ; Yes        ; |Top|SP[15]                ;
+; 105:1              ; 6 bits    ; 420 LEs       ; 24 LEs               ; 396 LEs                ; Yes        ; |Top|PC[2]                 ;
+; 105:1              ; 10 bits   ; 700 LEs       ; 40 LEs               ; 660 LEs                ; Yes        ; |Top|PC[7]                 ;
+; 25:1               ; 8 bits    ; 128 LEs       ; 16 LEs               ; 112 LEs                ; Yes        ; |Top|R[3][0]               ;
+; 25:1               ; 8 bits    ; 128 LEs       ; 16 LEs               ; 112 LEs                ; Yes        ; |Top|R[2][0]               ;
+; 25:1               ; 8 bits    ; 128 LEs       ; 16 LEs               ; 112 LEs                ; Yes        ; |Top|R[1][1]               ;
+; 25:1               ; 8 bits    ; 128 LEs       ; 16 LEs               ; 112 LEs                ; Yes        ; |Top|R[0][2]               ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |Top|Mux17                 ;
+; 7:1                ; 8 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |Top|Add0                  ;
+; 58:1               ; 7 bits    ; 266 LEs       ; 35 LEs               ; 231 LEs                ; No         ; |Top|Add0                  ;
+; 7:1                ; 16 bits   ; 64 LEs        ; 48 LEs               ; 16 LEs                 ; No         ; |Top|addr[10]              ;
+; 27:1               ; 2 bits    ; 36 LEs        ; 12 LEs               ; 24 LEs                 ; No         ; |Top|ALUout[4]             ;
+; 27:1               ; 2 bits    ; 36 LEs        ; 12 LEs               ; 24 LEs                 ; No         ; |Top|ALUout[2]             ;
+; 28:1               ; 2 bits    ; 36 LEs        ; 16 LEs               ; 20 LEs                 ; No         ; |Top|ALUout[6]             ;
+; 28:1               ; 2 bits    ; 36 LEs        ; 16 LEs               ; 20 LEs                 ; No         ; |Top|ALUout[1]             ;
+; 46:1               ; 2 bits    ; 60 LEs        ; 16 LEs               ; 44 LEs                 ; No         ; |Top|shiftedOut[3]         ;
+; 46:1               ; 2 bits    ; 60 LEs        ; 16 LEs               ; 44 LEs                 ; No         ; |Top|shiftedOut[4]         ;
+; 47:1               ; 2 bits    ; 62 LEs        ; 20 LEs               ; 42 LEs                 ; No         ; |Top|shiftedOut[1]         ;
+; 47:1               ; 2 bits    ; 62 LEs        ; 20 LEs               ; 42 LEs                 ; No         ; |Top|shiftedOut[7]         ;
+; 45:1               ; 8 bits    ; 240 LEs       ; 72 LEs               ; 168 LEs                ; No         ; |Top|din[0]                ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 17                          ;
+; cycloneiii_ff         ; 8539                        ;
+;     ENA               ; 8435                        ;
+;     ENA SLD           ; 90                          ;
+;     SCLR              ; 2                           ;
+;     plain             ; 12                          ;
+; cycloneiii_lcell_comb ; 8145                        ;
+;     arith             ; 270                         ;
+;         2 data inputs ; 99                          ;
+;         3 data inputs ; 171                         ;
+;     normal            ; 7875                        ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 281                         ;
+;         2 data inputs ; 92                          ;
+;         3 data inputs ; 1226                        ;
+;         4 data inputs ; 6275                        ;
+;                       ;                             ;
+; Max LUT depth         ; 17.00                       ;
+; Average LUT depth     ; 10.25                       ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:23     ;
++----------------+--------------+
 
 
 +-------------------------------+
@@ -165,7 +398,7 @@ on the Quartus Prime software download page.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
-    Info: Processing started: Tue Jan 27 14:32:04 2026
+    Info: Processing started: Sun Feb  1 21:17:42 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off 8bitCPU -c 8bitCPU
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -181,55 +414,58 @@ Info (12021): Found 1 design units, including 1 entities, in source file timer.s
     Info (12023): Found entity 1: timer File: C:/Users/levia/Documents/8bitCPU/HDL/timer.sv Line: 1
 Info (12127): Elaborating entity "Top" for the top level hierarchy
 Warning (10858): Verilog HDL warning at Top.sv(17): object keyInt used but never assigned File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 17
-Warning (10850): Verilog HDL warning at Top.sv(32): number of words (28) in memory file does not match the number of elements in the address range [0:1023] File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 32
-Warning (10230): Verilog HDL assignment warning at Top.sv(93): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 93
-Warning (10230): Verilog HDL assignment warning at Top.sv(99): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 99
-Warning (10230): Verilog HDL assignment warning at Top.sv(103): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 103
-Warning (10230): Verilog HDL assignment warning at Top.sv(107): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 107
-Warning (10230): Verilog HDL assignment warning at Top.sv(111): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 111
-Warning (10230): Verilog HDL assignment warning at Top.sv(161): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 161
-Warning (10230): Verilog HDL assignment warning at Top.sv(167): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 167
-Warning (10272): Verilog HDL Case Statement warning at Top.sv(151): case item expression covers a value already covered by a previous case item File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 151
-Warning (10272): Verilog HDL Case Statement warning at Top.sv(155): case item expression covers a value already covered by a previous case item File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 155
-Warning (10240): Verilog HDL Always Construct warning at Top.sv(36): inferring latch(es) for variable "shiftedOut", which holds its previous value in one or more paths through the always construct File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 36
-Error (10166): SystemVerilog RTL Coding error at Top.sv(36): always_comb construct does not infer purely combinational logic. File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 36
-Warning (10230): Verilog HDL assignment warning at Top.sv(233): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 233
-Warning (10230): Verilog HDL assignment warning at Top.sv(236): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 236
-Warning (10230): Verilog HDL assignment warning at Top.sv(262): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 262
-Warning (10230): Verilog HDL assignment warning at Top.sv(264): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 264
-Warning (10230): Verilog HDL assignment warning at Top.sv(266): truncated value with size 72 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 266
-Warning (10230): Verilog HDL assignment warning at Top.sv(267): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 267
-Warning (10230): Verilog HDL assignment warning at Top.sv(270): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 270
-Warning (10230): Verilog HDL assignment warning at Top.sv(272): truncated value with size 72 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 272
-Warning (10230): Verilog HDL assignment warning at Top.sv(273): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 273
-Warning (10230): Verilog HDL assignment warning at Top.sv(276): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 276
-Warning (10230): Verilog HDL assignment warning at Top.sv(278): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 278
-Warning (10230): Verilog HDL assignment warning at Top.sv(288): truncated value with size 32 to match size of target (8) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 288
-Warning (10230): Verilog HDL assignment warning at Top.sv(290): truncated value with size 32 to match size of target (8) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 290
-Warning (10230): Verilog HDL assignment warning at Top.sv(338): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 338
-Warning (10230): Verilog HDL assignment warning at Top.sv(340): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 340
-Warning (10230): Verilog HDL assignment warning at Top.sv(343): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 343
-Warning (10230): Verilog HDL assignment warning at Top.sv(345): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 345
-Warning (10230): Verilog HDL assignment warning at Top.sv(347): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 347
-Warning (10230): Verilog HDL assignment warning at Top.sv(349): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 349
-Warning (10230): Verilog HDL assignment warning at Top.sv(371): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 371
-Warning (10230): Verilog HDL assignment warning at Top.sv(399): truncated value with size 32 to match size of target (2) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 399
+Warning (10850): Verilog HDL warning at Top.sv(32): number of words (61) in memory file does not match the number of elements in the address range [0:1023] File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 32
+Warning (10230): Verilog HDL assignment warning at Top.sv(98): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 98
+Warning (10230): Verilog HDL assignment warning at Top.sv(104): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 104
+Warning (10230): Verilog HDL assignment warning at Top.sv(108): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 108
+Warning (10230): Verilog HDL assignment warning at Top.sv(112): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 112
+Warning (10230): Verilog HDL assignment warning at Top.sv(116): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 116
+Warning (10230): Verilog HDL assignment warning at Top.sv(125): truncated value with size 32 to match size of target (8) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 125
+Warning (10230): Verilog HDL assignment warning at Top.sv(127): truncated value with size 32 to match size of target (8) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 127
+Warning (10230): Verilog HDL assignment warning at Top.sv(170): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 170
+Warning (10230): Verilog HDL assignment warning at Top.sv(176): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 176
+Warning (10272): Verilog HDL Case Statement warning at Top.sv(160): case item expression covers a value already covered by a previous case item File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 160
+Warning (10272): Verilog HDL Case Statement warning at Top.sv(164): case item expression covers a value already covered by a previous case item File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 164
+Warning (10230): Verilog HDL assignment warning at Top.sv(242): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 242
+Warning (10230): Verilog HDL assignment warning at Top.sv(245): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 245
+Warning (10230): Verilog HDL assignment warning at Top.sv(320): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 320
+Warning (10230): Verilog HDL assignment warning at Top.sv(322): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 322
+Warning (10230): Verilog HDL assignment warning at Top.sv(344): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 344
+Warning (10230): Verilog HDL assignment warning at Top.sv(352): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 352
+Warning (10230): Verilog HDL assignment warning at Top.sv(354): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 354
+Warning (10230): Verilog HDL assignment warning at Top.sv(356): truncated value with size 72 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 356
+Warning (10230): Verilog HDL assignment warning at Top.sv(357): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 357
+Warning (10230): Verilog HDL assignment warning at Top.sv(360): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 360
+Warning (10230): Verilog HDL assignment warning at Top.sv(362): truncated value with size 72 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 362
+Warning (10230): Verilog HDL assignment warning at Top.sv(363): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 363
+Warning (10230): Verilog HDL assignment warning at Top.sv(366): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 366
+Warning (10230): Verilog HDL assignment warning at Top.sv(368): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 368
+Warning (10230): Verilog HDL assignment warning at Top.sv(399): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 399
+Warning (10230): Verilog HDL assignment warning at Top.sv(401): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 401
+Warning (10230): Verilog HDL assignment warning at Top.sv(404): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 404
+Warning (10230): Verilog HDL assignment warning at Top.sv(406): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 406
+Warning (10230): Verilog HDL assignment warning at Top.sv(434): truncated value with size 32 to match size of target (2) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 434
 Warning (10030): Net "keyInt" at Top.sv(17) has no driver or initial value, using a default initial value '0' File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 17
-Info (10041): Inferred latch for "shiftedOut[0]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[1]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[2]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[3]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[4]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[5]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[6]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Info (10041): Inferred latch for "shiftedOut[7]" at Top.sv(43) File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 43
-Error (12153): Can't elaborate top-level user hierarchy
+Info (12128): Elaborating entity "timer" for hierarchy "timer:timer1" File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 24
+Warning (10230): Verilog HDL assignment warning at timer.sv(26): truncated value with size 32 to match size of target (16) File: C:/Users/levia/Documents/8bitCPU/HDL/timer.sv Line: 26
+Warning (10230): Verilog HDL assignment warning at timer.sv(54): truncated value with size 32 to match size of target (1) File: C:/Users/levia/Documents/8bitCPU/HDL/timer.sv Line: 54
+Warning (127007): Memory Initialization File or Hexadecimal (Intel-Format) File "C:/Users/levia/Documents/8bitCPU/HDL/db/8bitCPU.ram0_Top_16614.hdl.mif" contains "don't care" values -- overwriting them with 0s
+Info (276014): Found 1 instances of uninferred RAM logic
+    Info (276013): RAM logic "RAM" is uninferred because MIF is not supported for the selected family File: C:/Users/levia/Documents/8bitCPU/HDL/Top.sv Line: 29
+Warning (127007): Memory Initialization File or Hexadecimal (Intel-Format) File "C:/Users/levia/Documents/8bitCPU/HDL/db/8bitCPU.ram0_Top_16614.hdl.mif" contains "don't care" values -- overwriting them with 0s
+Info (286030): Timing-Driven Synthesis is running
 Info (144001): Generated suppressed messages file C:/Users/levia/Documents/8bitCPU/HDL/output_files/8bitCPU.map.smsg
-Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 35 warnings
-    Error: Peak virtual memory: 4743 megabytes
-    Error: Processing ended: Tue Jan 27 14:32:13 2026
-    Error: Elapsed time: 00:00:09
-    Error: Total CPU time (on all processors): 00:00:23
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 16280 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 9 input pins
+    Info (21059): Implemented 8 output pins
+    Info (21061): Implemented 16263 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 38 warnings
+    Info: Peak virtual memory: 4884 megabytes
+    Info: Processing ended: Sun Feb  1 21:18:17 2026
+    Info: Elapsed time: 00:00:35
+    Info: Total CPU time (on all processors): 00:00:48
 
 
 +------------------------------------------+

@@ -47,3 +47,4 @@ SUB R2
 BNE loop2
 
 MV A R0         // return c
+RET

@@ -29,7 +29,7 @@ assign clk = MAX10_CLK1_50;
 (* ramstyle = "M10K" *) logic [7:0] RAM [1023:0];
 
 initial begin
-    $readmemb("../assembler/tests/timertest.bin", RAM);
+    $readmemb("testcode/memcpytest.bin", RAM);
 end
 
 always_comb begin
@@ -121,6 +121,10 @@ always_comb begin
 			we = 1;
 			addr = AB;
 			din = R[instruction[1:0]]; end
+		8'b110100??:								//R -/+ 1
+			ALUout <= R[instruction[1:0]] - 1;
+		8'b110101??:								
+			ALUout <= R[instruction[1:0]] + 1;
 		8'b11110000:								//A <-> [AB]
 			addr = AB;
 		8'b11110001: begin								
@@ -279,10 +283,18 @@ always_ff @(posedge clk) begin
 		8'b110001??:
 			R[instruction[1:0]] <= A;
 										
-		8'b110100??:								//R -/+ 1
-			R[instruction[1:0]] <= R[instruction[1:0]] - 1;
-		8'b110101??:								
-			R[instruction[1:0]] <= R[instruction[1:0]] + 1;
+		8'b110100??: begin							//R -/+ 1
+			FR[0] <= ALUout == 0;
+			FR[1] <= ALUout[7];
+			FR[2] <= A >= R[instruction[1:0]];
+			FR[3] <= (A[7] != R[instruction[1:0]][7]) && (ALUout[7] != A[7]);
+			R[instruction[1:0]] <= ALUout; end
+		8'b110101??: begin								
+			FR[0] <= ALUout == 0;
+			FR[1] <= ALUout[7];
+			FR[2] <= ALUout < R[instruction[1:0]];
+			FR[3] <= (A[7] == R[instruction[1:0]][7]) && (ALUout[7] != A[7]);
+			R[instruction[1:0]] <= ALUout; end
 		8'b110110??:								//R -> AB
 			AB <= {{8{R[instruction[1:0]][7]}},R[instruction[1:0]]};
 		8'b110111??:

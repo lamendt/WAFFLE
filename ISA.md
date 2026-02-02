@@ -278,6 +278,8 @@ Assembly:
 
 Immediate can only be -1 or 1
 
+**Note: this operation sets **FR** normally*
+
 Assembly:
 `ADD Rx (imm)`
 
